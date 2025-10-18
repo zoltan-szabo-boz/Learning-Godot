@@ -1,0 +1,36 @@
+{
+	"name": "Godot 4.5 Development",
+	"image": "barichello/godot-ci:4.3",
+
+	// VS Code customizations
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"geequlim.godot-tools"
+			],
+			"settings": {
+				"godotTools.editorPath.godot4": "/usr/local/bin/godot",
+				"godot_tools.gdscript_lsp_server_port": 6050,
+				"godot_tools.gdscript_lsp_server_host": "127.0.0.1"
+			}
+		}
+	},
+
+	// Forward ports for LSP
+	"forwardPorts": [6050],
+
+	// Post-create command
+	"postCreateCommand": "godot --version",
+
+	// Features to install
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {}
+	},
+
+	// Mount the project
+	"workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+	"workspaceFolder": "/workspace",
+
+	// Run as non-root user
+	"remoteUser": "root"
+}

@@ -1,0 +1,37 @@
+{
+  "name": "learning-godot",
+  "description": "A Godot 4.5 learning project",
+  "godot_version": "4.5.1",
+  "addons": [
+    {
+      "name": "gut",
+      "version": "9.3.0",
+      "source": "assetlib",
+      "asset_id": "54",
+      "description": "Godot Unit Test framework for automated testing",
+      "required": true,
+      "dev_only": true
+    }
+  ],
+  "export_presets": {
+    "windows": {
+      "enabled": false,
+      "description": "Export templates not yet configured"
+    },
+    "linux": {
+      "enabled": false,
+      "description": "Export templates not yet configured"
+    }
+  },
+  "installation_notes": {
+    "addons": "Install addons via Godot Editor > AssetLib or download from GitHub",
+    "gut": "https://github.com/bitwes/Gut",
+    "manual_setup": [
+      "1. Open Godot Editor",
+      "2. Go to AssetLib tab",
+      "3. Search for addon name",
+      "4. Download and install",
+      "5. Enable in Project > Project Settings > Plugins"
+    ]
+  }
+}

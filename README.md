@@ -1,6 +1,6 @@
 # Learning Godot Project
 
-A Godot 4.5 learning project configured with GL Compatibility rendering. Features a Hungarian language UI with main menu and game scene navigation.
+A Godot 4.5 learning project configured with GL Compatibility rendering. Features a simple UI with main menu and game scene navigation.
 
 ## Table of Contents
 
@@ -10,6 +10,7 @@ A Godot 4.5 learning project configured with GL Compatibility rendering. Feature
 - [Testing](#testing)
 - [Building](#building)
 - [Project Structure](#project-structure)
+- [Dependency Management & Docker](#dependency-management--docker)
 - [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
@@ -44,6 +45,7 @@ The project already includes `.vscode/` configuration files:
 - **extensions.json** - Recommends required extensions
 
 **Important**: Verify the Godot path in `.vscode/settings.json` matches your installation:
+
 ```json
 "godotTools.editorPath.godot4": "d:\\Godot\\Godot_v4.5.1-stable_win64.exe"
 ```
@@ -74,6 +76,7 @@ If connection fails, see [Troubleshooting](#troubleshooting).
 ### Editing Files
 
 **Edit these files directly in VS Code:**
+
 - `scripts/*.gd` - GDScript logic files
 - `scenes/*.tscn` - Godot scene files (text format)
 - `themes/*.tres` - Godot resource files (text format)
@@ -89,10 +92,12 @@ If connection fails, see [Troubleshooting](#troubleshooting).
 Press `F5` or click Run > Start Debugging, then select:
 
 1. **Launch in Godot Editor** (default)
+
    - Runs the main scene (`res://scenes/main_menu.tscn`)
    - Use for general testing
 
 2. **Launch Current Scene**
+
    - Runs whatever scene file you have open in VS Code
    - Use for testing specific scenes
 
@@ -102,15 +107,15 @@ Press `F5` or click Run > Start Debugging, then select:
 
 #### Debug Controls
 
-| Key | Action |
-|-----|--------|
-| `F5` | Start debugging / Continue |
-| `Shift+F5` | Stop debugging |
-| `Ctrl+Shift+F5` | Restart debugging |
-| `F9` | Toggle breakpoint |
-| `F10` | Step over |
-| `F11` | Step into |
-| `Shift+F11` | Step out |
+| Key             | Action                     |
+| --------------- | -------------------------- |
+| `F5`            | Start debugging / Continue |
+| `Shift+F5`      | Stop debugging             |
+| `Ctrl+Shift+F5` | Restart debugging          |
+| `F9`            | Toggle breakpoint          |
+| `F10`           | Step over                  |
+| `F11`           | Step into                  |
+| `Shift+F11`     | Step out                   |
 
 #### Breakpoints
 
@@ -123,6 +128,7 @@ Press `F5` or click Run > Start Debugging, then select:
 ### Alternative: Run in Godot Editor
 
 If you prefer running from Godot:
+
 - `F5` - Run project (main scene)
 - `F6` - Run current scene
 - `F8` - Stop
@@ -132,6 +138,7 @@ If you prefer running from Godot:
 ### Manual Testing
 
 Run the game and verify:
+
 - Main menu displays with title "Tanuld meg a Godót!"
 - Start button launches game scene
 - Options button is disabled (not implemented)
@@ -151,19 +158,80 @@ validate.bat
 ```
 
 The script checks:
+
 - Required scene files exist
 - Required script files exist
 - Exit code 0 = passed, 1 = failed
 
-### Unit Testing (Recommended)
+### Unit Testing with GUT
 
-For more comprehensive testing, install the GUT (Godot Unit Test) framework:
+This project includes GUT (Godot Unit Test) framework for automated testing.
 
-1. Open Godot Editor
-2. Go to `AssetLib` tab
-3. Search for "GUT"
-4. Download and install
-5. Create tests in `scripts/tests/`
+#### Running Tests in Godot Editor
+
+1. Open Godot Editor with this project
+2. Open the GUT panel (usually at bottom of editor)
+3. Click "Run All" to run all tests
+4. Or select specific test file and click "Run"
+
+#### Running Tests from Command Line
+
+```bash
+# Run all tests
+"d:\Godot\Godot_v4.5.1-stable_win64.exe" --path "D:\Godot\learning-godot" -s addons/gut/gut_cmdln.gd
+
+# Run specific test
+"d:\Godot\Godot_v4.5.1-stable_win64.exe" --path "D:\Godot\learning-godot" -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_calculator.gd
+```
+
+#### Included Tests
+
+The project includes example tests in `tests/`:
+
+- **test_calculator.gd** - Unit tests for pure logic (Calculator class)
+  - Tests addition, subtraction, multiplication, division
+  - Tests edge cases like division by zero
+  - Tests helper functions (is_even, is_positive)
+
+- **test_main_menu.gd** - Integration tests for main menu scene
+  - Tests scene loading
+  - Tests button existence and states
+  - Tests UI elements (title, buttons)
+
+- **test_game.gd** - Integration tests for game scene
+  - Tests scene loading
+  - Tests back button functionality
+  - Tests scene elements
+
+#### Writing New Tests
+
+Create test files in `tests/` directory following this pattern:
+
+```gdscript
+extends GutTest
+
+# Setup runs before each test
+func before_each():
+    # Setup code here
+    pass
+
+# Test functions must start with "test_"
+func test_something():
+    assert_eq(2 + 2, 4, "Math should work")
+    assert_true(true, "This should pass")
+    assert_not_null(Node.new(), "Nodes should be created")
+```
+
+Common GUT assertions:
+- `assert_eq(got, expected, message)` - Values are equal
+- `assert_ne(got, expected, message)` - Values are not equal
+- `assert_true(condition, message)` - Condition is true
+- `assert_false(condition, message)` - Condition is false
+- `assert_null(value, message)` - Value is null
+- `assert_not_null(value, message)` - Value is not null
+- `assert_gt(got, expected, message)` - Greater than
+- `assert_lt(got, expected, message)` - Less than
+- `assert_almost_eq(got, expected, error, message)` - Approximately equal (for floats)
 
 ## Building
 
@@ -172,11 +240,13 @@ For more comprehensive testing, install the GUT (Godot Unit Test) framework:
 This is a learning project without export templates configured. To build for distribution:
 
 1. **Install Export Templates**
+
    - Open Godot Editor
    - `Editor > Manage Export Templates`
    - Download for your Godot version
 
 2. **Configure Export Preset**
+
    - `Project > Export`
    - Add preset (Windows Desktop, Linux, etc.)
    - Configure settings (name, icon, etc.)
@@ -223,18 +293,27 @@ learning-godot/
 │   ├── settings.json       # Godot paths, LSP config
 │   ├── launch.json         # Debug configurations
 │   └── extensions.json     # Recommended extensions
+├── addons/                 # Third-party plugins
+│   └── gut/                # GUT testing framework
 ├── scenes/                 # Godot scene files
 │   ├── main_menu.tscn      # Main menu (entry point)
 │   └── game.tscn           # Game scene
 ├── scripts/                # GDScript files
 │   ├── main_menu.gd        # Main menu controller
 │   ├── game.gd             # Game scene controller
+│   ├── calculator.gd       # Calculator utility (example)
 │   └── validate_project.gd # Validation script
+├── tests/                  # GUT test files
+│   ├── test_calculator.gd  # Unit tests for Calculator
+│   ├── test_main_menu.gd   # Integration tests for main menu
+│   └── test_game.gd        # Integration tests for game scene
 ├── themes/                 # UI themes
 │   └── main_menu.tres      # Main menu theme
+├── .gutconfig.json         # GUT test runner configuration
 ├── CLAUDE.md               # AI assistant guidelines
 ├── project.godot           # Godot project configuration
 ├── README.md               # This file
+├── run_tests.bat           # Run all GUT tests (Windows)
 └── validate.bat            # Validation script (Windows)
 ```
 
@@ -248,8 +327,67 @@ learning-godot/
 ### Scene Navigation
 
 Scene transitions use `get_tree().change_scene_to_file()`:
+
 - Main menu → Game: `res://scenes/game.tscn` (scripts/main_menu.gd:10)
 - Game → Main menu: `res://scenes/main_menu.tscn` (scripts/game.gd:4)
+
+## Dependency Management & Docker
+
+This project includes comprehensive tooling for reproducible development environments.
+
+### Addon Management
+
+**Current approach: Addons are committed to git**
+
+Why?
+- ✅ Zero setup after `git clone`
+- ✅ Guaranteed version consistency
+- ✅ Godot has no official package manager (unlike npm)
+
+Verify addon setup:
+```bash
+setup_check.bat
+```
+
+### Dependency Tracking
+
+We maintain `addons.json` (similar to package.json) that documents:
+- Required addons and versions
+- Installation sources (AssetLib, GitHub)
+- Godot version requirements
+
+### Docker Support
+
+For CI/CD and headless testing:
+
+```bash
+# Build Docker image
+docker build -t godot-learning .
+
+# Run tests in container
+docker-compose run godot-test
+
+# Run validation in container
+docker-compose run godot-validate
+
+# Interactive shell
+docker-compose run godot-shell
+```
+
+**Note**: Docker is for headless testing/CI. For visual development, use local Godot Editor.
+
+### VS Code Dev Containers
+
+For isolated development:
+1. Install "Dev Containers" extension
+2. `Ctrl+Shift+P` → "Reopen in Container"
+3. VS Code rebuilds with Godot pre-installed
+
+**See [DEVELOPMENT.md](DEVELOPMENT.md) for complete details** on:
+- Alternative addon management strategies (git submodules, gd-plug)
+- Complete Docker workflow
+- CI/CD integration examples (GitHub Actions, GitLab CI)
+- Version pinning best practices
 
 ## Troubleshooting
 
@@ -258,6 +396,7 @@ Scene transitions use `get_tree().change_scene_to_file()`:
 **Symptoms**: No autocomplete, "Language server not connected" error
 
 **Solution**:
+
 1. Check Godot editor is running with project open
 2. Verify LSP port matches in both places:
    - Godot: `Editor > Editor Settings > Network > Language Server > Remote Port`
@@ -272,6 +411,7 @@ Scene transitions use `get_tree().change_scene_to_file()`:
 ### F5 debugging doesn't work
 
 **Solution**:
+
 1. Ensure Godot editor is running (LSP server must be active)
 2. Check Godot path in `.vscode/settings.json`
 3. Try running from Godot editor first (`F5` in Godot)
@@ -280,6 +420,7 @@ Scene transitions use `get_tree().change_scene_to_file()`:
 ### Syntax errors in .tscn or .tres files
 
 **Solution**:
+
 - These are Godot's text-based formats with specific structure
 - Avoid manual editing of node IDs, UIDs, and connections
 - Use Godot editor for scene structure changes
@@ -288,6 +429,7 @@ Scene transitions use `get_tree().change_scene_to_file()`:
 ### Changes not reflecting in game
 
 **Solution**:
+
 1. Save the file in VS Code (`Ctrl+S`)
 2. Godot should auto-reload
 3. If not, restart the scene in Godot (`F6`)

@@ -1,0 +1,28 @@
+# Godot cache and editor files
+.godot/
+.godot-editor/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Documentation (optional - include if you want docs in container)
+# *.md
+
+# Local builds
+builds/
+exports/
+
+# Temporary files
+*.tmp
+*.bak
+*~
