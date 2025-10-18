@@ -1,47 +1,219 @@
-[gd_scene load_steps=2 format=3 uid="uid://driuhrx2pmbqm"]
+[gd_scene load_steps=3 format=3 uid="uid://driuhrx2pmbqm"]
 
 [ext_resource type="Script" uid="uid://cg6vgxba21nkl" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="Texture2D" path="res://assets/mainmenu/menu-back.jpg" id="2_background"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-size_flags_horizontal = 6
-size_flags_vertical = 6
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_l6cm7")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="BackgroundTexture" type="TextureRect" parent="."]
 layout_mode = 1
-offset_right = 1155.0
-offset_bottom = 649.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_background")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+[node name="MainMenuPanel" type="Panel" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+
+[node name="PanelColor" type="ColorRect" parent="MarginContainer/HBoxContainer/MainMenuPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.15, 0.15, 0.15, 0.85)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MainMenuPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TopSpacer" type="Control" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 0
 text = "Tanuld meg a Godót!"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Start" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="ButtonSpacer" type="Control" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="ButtonMargin" type="MarginContainer" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="ButtonContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Start" type="Button" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 tooltip_text = "Start the game, obviously"
 mouse_filter = 1
 text = "Start Game"
 
-[node name="Options" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="Options" type="Button" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 tooltip_text = "Change the options"
 mouse_filter = 1
-disabled = true
 text = "Options"
 
-[node name="Quit" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="Quit" type="Button" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 tooltip_text = "Sorry to see you go :("
 mouse_filter = 1
 text = "Quit"
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[node name="BottomSpacer" type="Control" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OptionsPanel" type="Panel" parent="MarginContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+
+[node name="PanelColor" type="ColorRect" parent="MarginContainer/HBoxContainer/OptionsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.15, 0.15, 0.15, 0.85)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/OptionsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TopSpacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="ResolutionLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+layout_mode = 2
+text = "Resolution"
+horizontal_alignment = 1
+
+[node name="ResolutionMargin" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="ResolutionContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Res1920x1080" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+text = "1920 x 1080 (Full HD)"
+
+[node name="Res1280x720" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+text = "1280 x 720 (HD)"
+
+[node name="Res1600x900" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+text = "1600 x 900 (HD+)"
+
+[node name="Res1366x768" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+text = "1366 x 768"
+
+[node name="Res1024x768" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+text = "1024 x 768"
+
+[node name="Fullscreen" type="CheckButton" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="ButtonSpacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="BackButtonMargin" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="BackButton" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/BackButtonMargin"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Back to Menu"
+
+[node name="BottomSpacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1920x1080" to="." method="_on_resolution_pressed" binds= [1920, 1080]]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1280x720" to="." method="_on_resolution_pressed" binds= [1280, 720]]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1600x900" to="." method="_on_resolution_pressed" binds= [1600, 900]]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1366x768" to="." method="_on_resolution_pressed" binds= [1366, 768]]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1024x768" to="." method="_on_resolution_pressed" binds= [1024, 768]]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/BackButtonMargin/BackButton" to="." method="_on_back_to_menu_pressed"]

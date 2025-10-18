@@ -22,24 +22,38 @@ func test_main_menu_loads():
 
 # Test: Main menu has required buttons
 func test_main_menu_has_buttons():
-	var start_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Start")
-	var options_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Options")
-	var quit_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Quit")
+	var start_button = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Start")
+	var options_button = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Options")
+	var quit_button = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Quit")
 
 	assert_not_null(start_button, "Start button should exist")
 	assert_not_null(options_button, "Options button should exist")
 	assert_not_null(quit_button, "Quit button should exist")
 
-# Test: Options button is disabled
-func test_options_button_disabled():
-	var options_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Options")
+# Test: Options button is enabled and shows options panel
+func test_options_button_shows_panel():
+	var options_button = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Options")
+	var options_panel = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel")
+	var main_panel = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel")
 
-	if options_button:
-		assert_true(options_button.disabled, "Options button should be disabled")
+	assert_not_null(options_button, "Options button should exist")
+	assert_false(options_button.disabled, "Options button should be enabled")
+
+	if options_button and options_panel and main_panel:
+		# Initially, main panel should be visible and options panel hidden
+		assert_true(main_panel.visible, "Main panel should be visible initially")
+		assert_false(options_panel.visible, "Options panel should be hidden initially")
+
+		# Press the options button
+		options_button.pressed.emit()
+
+		# Options panel should now be visible and main panel hidden
+		assert_false(main_panel.visible, "Main panel should be hidden after pressing options")
+		assert_true(options_panel.visible, "Options panel should be visible after pressing options")
 
 # Test: Start button triggers scene change
 func test_start_button_changes_scene():
-	var start_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Start")
+	var start_button = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Start")
 
 	if start_button:
 		# Watch for scene change
@@ -58,7 +72,7 @@ func test_start_button_changes_scene():
 
 # Test: Main menu has title label
 func test_main_menu_has_title():
-	var title_label = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Label")
+	var title_label = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/Label")
 
 	assert_not_null(title_label, "Title label should exist")
 	if title_label:
@@ -66,9 +80,36 @@ func test_main_menu_has_title():
 
 # Test: Quit button calls quit method
 func test_quit_button_functionality():
-	var quit_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Quit")
+	var quit_button = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Quit")
 
 	if quit_button:
 		# We can't actually quit in tests, but we can verify the signal is connected
 		var connections = quit_button.pressed.get_connections()
 		assert_gt(connections.size(), 0, "Quit button should have signal connections")
+
+# Test: Options panel has resolution buttons
+func test_options_panel_has_resolution_buttons():
+	var res_1920 = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1920x1080")
+	var res_1280 = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1280x720")
+	var fullscreen = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Fullscreen")
+
+	assert_not_null(res_1920, "1920x1080 button should exist")
+	assert_not_null(res_1280, "1280x720 button should exist")
+	assert_not_null(fullscreen, "Fullscreen checkbox should exist")
+
+# Test: Back button returns to main menu
+func test_back_button_returns_to_menu():
+	var options_button = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Options")
+	var back_button = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/BackButtonMargin/BackButton")
+	var options_panel = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel")
+	var main_panel = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel")
+
+	if options_button and back_button and options_panel and main_panel:
+		# Go to options panel
+		options_button.pressed.emit()
+		assert_true(options_panel.visible, "Options panel should be visible")
+
+		# Go back to main menu
+		back_button.pressed.emit()
+		assert_true(main_panel.visible, "Main panel should be visible after going back")
+		assert_false(options_panel.visible, "Options panel should be hidden after going back")
