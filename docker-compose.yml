@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Godot headless testing environment
   godot-test:

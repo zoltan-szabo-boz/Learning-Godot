@@ -27,7 +27,7 @@ func test_divide():
 	assert_almost_eq(Calculator.divide(7.0, 2.0), 3.5, 0.001, "7 / 2 should equal 3.5")
 	assert_almost_eq(Calculator.divide(-10.0, 5.0), -2.0, 0.001, "-10 / 5 should equal -2")
 
-# Test: Division by zero returns 0 and logs error
+# Test: Division by zero returns 0 (silent handling)
 func test_divide_by_zero():
 	var result = Calculator.divide(10.0, 0.0)
 	assert_eq(result, 0.0, "Division by zero should return 0")

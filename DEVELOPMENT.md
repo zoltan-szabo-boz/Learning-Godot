@@ -35,9 +35,9 @@ If you prefer NOT to commit addons:
 
 Current addons in this project:
 
-| Addon | Version | Purpose | Source |
-|-------|---------|---------|--------|
-| GUT | 9.x | Unit testing framework | [AssetLib #54](https://godotengine.org/asset-library/asset/54) |
+| Addon | Version | Purpose                | Source                                                         |
+| ----- | ------- | ---------------------- | -------------------------------------------------------------- |
+| GUT   | 9.x     | Unit testing framework | [AssetLib #54](https://godotengine.org/asset-library/asset/54) |
 
 ### Setup Verification
 
@@ -73,6 +73,7 @@ We maintain `addons.json` as a package.json equivalent:
 ```
 
 This file serves as:
+
 - Documentation of required addons
 - Version tracking
 - Installation reference for new developers
@@ -128,6 +129,7 @@ git submodule update --init --recursive
 ### Our Recommendation
 
 For this learning project: **Commit addons directly**
+
 - Simplest approach
 - No extra tools required
 - Works with Godot's AssetLib workflow
@@ -172,6 +174,7 @@ docker-compose run godot-shell
 ```
 
 **Note**: Docker is primarily for:
+
 - CI/CD pipelines
 - Headless testing
 - Automated builds
@@ -184,17 +187,20 @@ For local development with Godot Editor, Docker is less practical (GUI apps).
 For VS Code users, we provide `.devcontainer/devcontainer.json`:
 
 **To use:**
+
 1. Install "Dev Containers" extension in VS Code
 2. Press `Ctrl+Shift+P` → "Reopen in Container"
 3. VS Code rebuilds inside Docker with Godot installed
 
 **Benefits:**
+
 - Isolated environment
 - Consistent across team
 - Pre-configured VS Code settings
 - Works on any platform (Windows/Mac/Linux)
 
 **Limitations:**
+
 - Headless only (no Godot Editor GUI)
 - Best for code editing + CLI testing
 - Still need local Godot Editor for visual work
@@ -204,11 +210,13 @@ For VS Code users, we provide `.devcontainer/devcontainer.json`:
 Godot itself is portable (no installation required):
 
 **Setup:**
+
 1. Download Godot binary to project folder or known location
 2. Document path in README
 3. Everyone uses same version
 
 **Project structure:**
+
 ```
 project/
 ├── .godot-version        # Track version
@@ -218,11 +226,13 @@ project/
 ```
 
 **Pros:**
+
 - Simple, no Docker required
 - Works with Godot Editor (full GUI)
 - Cross-platform (Windows/Mac/Linux builds)
 
 **Cons:**
+
 - ~100MB binary to commit (optional)
 - Manual version management
 
@@ -267,7 +277,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: barichello/godot-ci:4.3
+      image: barichello/godot-ci:4.5
 
     steps:
       - uses: actions/checkout@v3
@@ -286,7 +296,7 @@ jobs:
 
 ```yaml
 # .gitlab-ci.yml
-image: barichello/godot-ci:4.3
+image: barichello/godot-ci:4.5
 
 stages:
   - test
@@ -313,18 +323,21 @@ build:
 ### For This Learning Project
 
 ✅ **Use:**
+
 - Commit addons directly
 - `addons.json` for documentation
 - `setup_check.bat` for verification
 - Docker for CI/CD only
 
 ❌ **Skip:**
+
 - Complex dependency managers
 - Dev containers for local work (use native Godot Editor)
 
 ### For Team Projects
 
 ✅ **Consider:**
+
 - gd-plug or git submodules
 - Docker for CI/CD
 - Version pinning with `.godot-version`
@@ -333,6 +346,7 @@ build:
 ### For Production Projects
 
 ✅ **Must have:**
+
 - CI/CD with automated testing
 - Version pinning
 - Export template versioning
@@ -362,7 +376,7 @@ setup_check.bat
 # Solution: Check volume mounts and user permissions
 
 # Image not found
-# Solution: Pull manually: docker pull barichello/godot-ci:4.3
+# Solution: Pull manually: docker pull barichello/godot-ci:4.5
 ```
 
 ### Version Mismatches
@@ -371,6 +385,34 @@ setup_check.bat
 # Team using different Godot versions
 # Solution: Create .godot-version file and check in CI
 ```
+
+### GUT Addon Errors (GutErrorTracker not found)
+
+If you see errors like:
+```
+SCRIPT ERROR: Parse Error: Could not resolve class "GutErrorTracker"
+```
+
+This indicates a version mismatch between Godot and the GUT addon:
+
+**Diagnosis:**
+1. Check project.godot for configured Godot version
+2. Check Dockerfile for Docker image version
+3. Verify they match
+
+**Solution:**
+```bash
+# Rebuild Docker image after version update
+docker-compose build
+
+# Or rebuild manually
+docker build -t godot-learning .
+
+# Then run tests again
+docker-compose run godot-test
+```
+
+**Note:** This project requires Godot 4.5 to match project.godot configuration.
 
 ## Additional Resources
 

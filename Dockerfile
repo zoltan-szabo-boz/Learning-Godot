@@ -1,7 +1,7 @@
 # Godot Development Environment with Headless Testing
 # Based on official Godot Docker images
 
-FROM barichello/godot-ci:4.3
+FROM barichello/godot-ci:4.5
 
 # Set working directory
 WORKDIR /workspace
@@ -13,7 +13,7 @@ COPY . /workspace
 # RUN apt-get update && apt-get install -y <package-name>
 
 # Set environment variables
-ENV GODOT_VERSION=4.3
+ENV GODOT_VERSION=4.5
 ENV DISPLAY=:0
 
 # Default command: run tests

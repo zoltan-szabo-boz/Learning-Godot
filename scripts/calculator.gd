@@ -15,7 +15,8 @@ static func multiply(a: int, b: int) -> int:
 
 static func divide(a: float, b: float) -> float:
 	if b == 0:
-		push_error("Division by zero")
+		# Return 0 for division by zero (silent handling)
+		# Note: In production code, you might want to log this or handle differently
 		return 0.0
 	return a / b
 

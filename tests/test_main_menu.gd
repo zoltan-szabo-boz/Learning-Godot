@@ -22,9 +22,9 @@ func test_main_menu_loads():
 
 # Test: Main menu has required buttons
 func test_main_menu_has_buttons():
-	var start_button = main_menu.get_node_or_null("MarginContainer/VBoxContainer/VBoxContainer/StartButton")
-	var options_button = main_menu.get_node_or_null("MarginContainer/VBoxContainer/VBoxContainer/OptionsButton")
-	var quit_button = main_menu.get_node_or_null("MarginContainer/VBoxContainer/VBoxContainer/QuitButton")
+	var start_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Start")
+	var options_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Options")
+	var quit_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Quit")
 
 	assert_not_null(start_button, "Start button should exist")
 	assert_not_null(options_button, "Options button should exist")
@@ -32,14 +32,14 @@ func test_main_menu_has_buttons():
 
 # Test: Options button is disabled
 func test_options_button_disabled():
-	var options_button = main_menu.get_node_or_null("MarginContainer/VBoxContainer/VBoxContainer/OptionsButton")
+	var options_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Options")
 
 	if options_button:
 		assert_true(options_button.disabled, "Options button should be disabled")
 
 # Test: Start button triggers scene change
 func test_start_button_changes_scene():
-	var start_button = main_menu.get_node_or_null("MarginContainer/VBoxContainer/VBoxContainer/StartButton")
+	var start_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Start")
 
 	if start_button:
 		# Watch for scene change
@@ -58,7 +58,7 @@ func test_start_button_changes_scene():
 
 # Test: Main menu has title label
 func test_main_menu_has_title():
-	var title_label = main_menu.get_node_or_null("MarginContainer/VBoxContainer/TitleLabel")
+	var title_label = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Label")
 
 	assert_not_null(title_label, "Title label should exist")
 	if title_label:
@@ -66,7 +66,7 @@ func test_main_menu_has_title():
 
 # Test: Quit button calls quit method
 func test_quit_button_functionality():
-	var quit_button = main_menu.get_node_or_null("MarginContainer/VBoxContainer/VBoxContainer/QuitButton")
+	var quit_button = main_menu.get_node_or_null("CenterContainer/VBoxContainer/Quit")
 
 	if quit_button:
 		# We can't actually quit in tests, but we can verify the signal is connected

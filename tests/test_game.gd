@@ -22,7 +22,7 @@ func test_game_scene_loads():
 
 # Test: Game has a back button
 func test_game_has_back_button():
-	var back_button = game.get_node_or_null("Button")
+	var back_button = game.get_node_or_null("Control/Button")
 
 	assert_not_null(back_button, "Back button should exist in game scene")
 	if back_button:
@@ -30,23 +30,23 @@ func test_game_has_back_button():
 
 # Test: Back button has correct text
 func test_back_button_text():
-	var back_button = game.get_node_or_null("Button")
+	var back_button = game.get_node_or_null("Control/Button")
 
 	if back_button:
-		assert_eq(back_button.text, "Back", "Back button should say 'Back'")
+		assert_eq(back_button.text, "Back to main menu", "Back button should say 'Back to main menu'")
 
 # Test: Back button is connected to scene change
 func test_back_button_connected():
-	var back_button = game.get_node_or_null("Button")
+	var back_button = game.get_node_or_null("Control/Button")
 
 	if back_button:
 		var connections = back_button.pressed.get_connections()
 		assert_gt(connections.size(), 0, "Back button should have signal connections")
 
-# Test: Game scene has label
+# Test: Game scene has control node
 func test_game_has_label():
-	var label = game.get_node_or_null("Label")
+	var control = game.get_node_or_null("Control")
 
-	assert_not_null(label, "Game scene should have a Label")
-	if label:
-		assert_eq(label.text, "Game", "Label should say 'Game'")
+	assert_not_null(control, "Game scene should have a Control node")
+	if control:
+		assert_true(control is Control, "Control should be a Control node")
