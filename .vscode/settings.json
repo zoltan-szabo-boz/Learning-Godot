@@ -1,0 +1,33 @@
+{
+  "godotTools.editorPath.godot4": "d:\\Godot\\Godot_v4.5.1-stable_win64.exe",
+  "godot_tools.gdscript_lsp_server_port": 6005,
+  "godot_tools.gdscript_lsp_server_host": "127.0.0.1",
+  "godot_tools.editor_path": "d:\\Godot\\Godot_v4.5.1-stable_win64.exe",
+
+  // File associations for Godot file types
+  "files.associations": {
+    "*.tscn": "godot-scene",
+    "*.tres": "godot-resource",
+    "*.gd": "gdscript"
+  },
+
+  // Editor settings for GDScript
+  "editor.tabSize": 4,
+  "editor.insertSpaces": false,
+  "[gdscript]": {
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false
+  },
+
+  // Exclude Godot cache from file watcher
+  "files.exclude": {
+    "**/.godot/": true
+  },
+  "search.exclude": {
+    "**/.godot/": true
+  },
+  "files.watcherExclude": {
+    "**/.godot/**": true
+  }
+}
