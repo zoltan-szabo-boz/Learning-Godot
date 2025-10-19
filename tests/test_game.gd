@@ -9,11 +9,11 @@ var game: Node2D
 # Setup runs before each test
 func before_each():
 	game = game_scene.instantiate()
-	add_child(game)
+	add_child_autofree(game)
 
 # Teardown runs after each test
 func after_each():
-	game.queue_free()
+	pass  # add_child_autofree handles cleanup automatically
 
 # Test: Game scene loads successfully
 func test_game_scene_loads():

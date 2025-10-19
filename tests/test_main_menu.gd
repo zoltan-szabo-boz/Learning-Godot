@@ -9,11 +9,11 @@ var main_menu: Control
 # Setup runs before each test
 func before_each():
 	main_menu = main_menu_scene.instantiate()
-	add_child(main_menu)
+	add_child_autofree(main_menu)
 
 # Teardown runs after each test
 func after_each():
-	main_menu.queue_free()
+	pass  # add_child_autofree handles cleanup automatically
 
 # Test: Main menu scene loads successfully
 func test_main_menu_loads():

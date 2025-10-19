@@ -247,7 +247,7 @@ func test_debounce_after_timeout():
 	assert_eq(emit_count[0], 1, "First emit should succeed")
 
 	# Wait longer than debounce time (use multiple frames to ensure time passes)
-	await wait_frames(10)
+	await wait_process_frames(10)
 
 	EventBus.emit_debounced("TEST_EVENT", {}, 0.05)
 	assert_eq(emit_count[0], 2, "Second emit should succeed after timeout")
@@ -276,8 +276,8 @@ func test_delayed_event_zero_delay():
 	# Should not be called immediately (even with 0 delay)
 	assert_false(test_callback_called, "Callback should not be called immediately")
 
-	# Wait one frame (use GUT's wait_frames)
-	await wait_frames(1)
+	# Wait one frame (use GUT's wait_process_frames)
+	await wait_process_frames(1)
 
 	assert_true(test_callback_called, "Callback should be called after one frame")
 
