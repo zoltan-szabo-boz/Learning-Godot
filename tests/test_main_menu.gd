@@ -76,7 +76,8 @@ func test_main_menu_has_title():
 
 	assert_not_null(title_label, "Title label should exist")
 	if title_label:
-		assert_eq(title_label.text, "Tanuld meg a Godót!", "Title should be 'Tanuld meg a Godót!'")
+		# Title now uses translation key
+		assert_eq(title_label.text, "GAME_TITLE", "Title should use translation key 'GAME_TITLE'")
 
 # Test: Quit button calls quit method
 func test_quit_button_functionality():
@@ -113,3 +114,39 @@ func test_back_button_returns_to_menu():
 		back_button.pressed.emit()
 		assert_true(main_panel.visible, "Main panel should be visible after going back")
 		assert_false(options_panel.visible, "Options panel should be hidden after going back")
+
+# Test: Language selector buttons exist
+func test_language_buttons_exist():
+	var lang_english = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangEnglish")
+	var lang_hungarian = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangHungarian")
+
+	assert_not_null(lang_english, "English language button should exist")
+	assert_not_null(lang_hungarian, "Hungarian language button should exist")
+
+# Test: Clicking language button changes language
+func test_language_button_changes_language():
+	var lang_english = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangEnglish")
+	var lang_hungarian = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangHungarian")
+
+	if lang_english and lang_hungarian:
+		# Set to English
+		lang_english.pressed.emit()
+		await get_tree().process_frame
+		assert_eq(LocalizationManager.get_language(), "en", "Language should change to English")
+
+		# Set to Hungarian
+		lang_hungarian.pressed.emit()
+		await get_tree().process_frame
+		assert_eq(LocalizationManager.get_language(), "hu", "Language should change to Hungarian")
+
+# Test: Language change updates UI text
+func test_language_change_updates_ui():
+	var title_label = main_menu.get_node_or_null("MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/Label")
+
+	if title_label:
+		# Set to English and wait for update
+		LocalizationManager.set_language("en")
+		await get_tree().process_frame
+		# In Godot, labels with translation keys automatically update
+		# We verify the translation key is set (actual translation happens in engine)
+		assert_eq(title_label.text, "GAME_TITLE", "Label should use translation key")

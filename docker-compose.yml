@@ -1,6 +1,6 @@
 services:
   # Godot headless testing environment
-  godot-test:
+  test:
     build: .
     image: godot-learning:latest
     container_name: godot-learning-test
@@ -9,7 +9,7 @@ services:
     command: godot --headless --path /workspace -s addons/gut/gut_cmdln.gd
 
   # Godot project validation
-  godot-validate:
+  validate:
     build: .
     image: godot-learning:latest
     container_name: godot-learning-validate
@@ -18,7 +18,7 @@ services:
     command: godot --headless --path /workspace --script res://scripts/validate_project.gd
 
   # Interactive development shell
-  godot-shell:
+  shell:
     build: .
     image: godot-learning:latest
     container_name: godot-learning-shell
@@ -27,8 +27,7 @@ services:
     stdin_open: true
     tty: true
     command: bash
-
 # Usage:
-# docker-compose run godot-test          # Run all tests
-# docker-compose run godot-validate      # Run validation
-# docker-compose run godot-shell         # Interactive shell
+# docker-compose run test          # Run all tests
+# docker-compose run validate      # Run validation
+# docker-compose run shell         # Interactive shell

@@ -13,7 +13,7 @@ func _on_quit_pressed():
 	get_tree().quit()
 
 func _on_start_pressed():
-	print("Starting the game!")
+	print(tr("MESSAGE_STARTING_GAME"))
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
 
 func _on_options_pressed():
@@ -28,7 +28,7 @@ func _on_back_to_menu_pressed():
 
 func _on_resolution_pressed(width: int, height: int):
 	# Change the window resolution and save to config
-	print("Changing resolution to %dx%d" % [width, height])
+	print(tr("MESSAGE_RESOLUTION_CHANGED") % [width, height])
 
 	# If in fullscreen mode, switch to windowed first
 	if ConfigManager.config.fullscreen:
@@ -41,4 +41,10 @@ func _on_resolution_pressed(width: int, height: int):
 func _on_fullscreen_toggled(toggled_on: bool):
 	# Toggle fullscreen mode and save to config
 	ConfigManager.set_fullscreen(toggled_on)
-	print("Fullscreen %s" % ("enabled" if toggled_on else "disabled"))
+	var message_key = "MESSAGE_FULLSCREEN_ENABLED" if toggled_on else "MESSAGE_FULLSCREEN_DISABLED"
+	print(tr(message_key))
+
+func _on_language_pressed(locale: String):
+	# Change language through LocalizationManager
+	LocalizationManager.set_language(locale)
+	print("Language changed to: %s" % locale)

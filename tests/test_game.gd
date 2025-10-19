@@ -28,12 +28,13 @@ func test_game_has_back_button():
 	if back_button:
 		assert_true(back_button is Button, "Back button should be a Button node")
 
-# Test: Back button has correct text
+# Test: Back button has correct text (translation key)
 func test_back_button_text():
 	var back_button = game.get_node_or_null("Control/Button")
 
 	if back_button:
-		assert_eq(back_button.text, "Back to main menu", "Back button should say 'Back to main menu'")
+		# Button now uses translation key
+		assert_eq(back_button.text, "BUTTON_BACK_TO_MAIN_MENU", "Back button should use translation key")
 
 # Test: Back button is connected to scene change
 func test_back_button_connected():

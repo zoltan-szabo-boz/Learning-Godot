@@ -19,6 +19,12 @@ config/icon="res://icon.svg"
 
 FileManager="*res://scripts/file_manager.gd"
 ConfigManager="*res://scripts/config_manager.gd"
+LocalizationManager="*res://scripts/localization_manager.gd"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://translations/translations.en.translation", "res://translations/translations.hu.translation")
+locale/translations_pot_files=PackedStringArray("res://translations/translations.csv")
 
 [rendering]
 

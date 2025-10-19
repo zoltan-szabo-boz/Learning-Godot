@@ -67,7 +67,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 0
-text = "Tanuld meg a Godót!"
+text = "GAME_TITLE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -87,23 +87,23 @@ theme_override_constants/separation = 15
 [node name="Start" type="Button" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-tooltip_text = "Start the game, obviously"
+tooltip_text = "TOOLTIP_START_GAME"
 mouse_filter = 1
-text = "Start Game"
+text = "BUTTON_START_GAME"
 
 [node name="Options" type="Button" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-tooltip_text = "Change the options"
+tooltip_text = "TOOLTIP_OPTIONS"
 mouse_filter = 1
-text = "Options"
+text = "BUTTON_OPTIONS"
 
 [node name="Quit" type="Button" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-tooltip_text = "Sorry to see you go :("
+tooltip_text = "TOOLTIP_QUIT"
 mouse_filter = 1
-text = "Quit"
+text = "BUTTON_QUIT"
 
 [node name="BottomSpacer" type="Control" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer"]
 layout_mode = 2
@@ -138,7 +138,7 @@ layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
 layout_mode = 2
-text = "Options"
+text = "OPTIONS_TITLE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -148,7 +148,7 @@ layout_mode = 2
 
 [node name="ResolutionLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
 layout_mode = 2
-text = "Resolution"
+text = "LABEL_RESOLUTION"
 horizontal_alignment = 1
 
 [node name="ResolutionMargin" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
@@ -163,33 +163,63 @@ theme_override_constants/separation = 10
 [node name="Res1920x1080" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
-text = "1920 x 1080 (Full HD)"
+text = "RESOLUTION_1920X1080"
 
 [node name="Res1280x720" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
-text = "1280 x 720 (HD)"
+text = "RESOLUTION_1280X720"
 
 [node name="Res1600x900" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
-text = "1600 x 900 (HD+)"
+text = "RESOLUTION_1600X900"
 
 [node name="Res1366x768" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
-text = "1366 x 768"
+text = "RESOLUTION_1366X768"
 
 [node name="Res1024x768" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
-text = "1024 x 768"
+text = "RESOLUTION_1024X768"
 
 [node name="Fullscreen" type="CheckButton" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
 layout_mode = 2
-text = "Fullscreen"
+text = "BUTTON_FULLSCREEN"
 
 [node name="ButtonSpacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="LanguageLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+layout_mode = 2
+text = "LABEL_LANGUAGE"
+horizontal_alignment = 1
+
+[node name="LanguageMargin" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="LanguageContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LangEnglish" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LANGUAGE_ENGLISH"
+
+[node name="LangHungarian" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "LANGUAGE_HUNGARIAN"
+
+[node name="ButtonSpacer2" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
@@ -201,7 +231,7 @@ theme_override_constants/margin_right = 30
 [node name="BackButton" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/BackButtonMargin"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-text = "Back to Menu"
+text = "BUTTON_BACK_TO_MENU"
 
 [node name="BottomSpacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
 layout_mode = 2
@@ -216,4 +246,6 @@ size_flags_vertical = 3
 [connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1366x768" to="." method="_on_resolution_pressed" binds= [1366, 768]]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1024x768" to="." method="_on_resolution_pressed" binds= [1024, 768]]
 [connection signal="toggled" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangEnglish" to="." method="_on_language_pressed" binds= ["en"]]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangHungarian" to="." method="_on_language_pressed" binds= ["hu"]]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/BackButtonMargin/BackButton" to="." method="_on_back_to_menu_pressed"]
