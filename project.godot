@@ -21,6 +21,7 @@ FileManager="*res://scripts/file_manager.gd"
 ConfigManager="*res://scripts/config_manager.gd"
 LocalizationManager="*res://scripts/localization_manager.gd"
 TooltipManager="*res://scripts/tooltip_manager.gd"
+EventBus="*res://scripts/event_bus.gd"
 
 [internationalization]
 

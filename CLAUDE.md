@@ -19,6 +19,10 @@ This is a Godot 4.5 learning project configured with GL Compatibility rendering.
   - `file_manager.gd` - Singleton for filesystem abstraction (console-ready)
   - `config_manager.gd` - Singleton for game settings persistence
   - `localization_manager.gd` - Singleton for language management
+  - `tooltip_manager.gd` - Singleton for dynamic tooltip system
+  - `event_bus.gd` - Singleton for global event management
+  - `utils/` - Utility classes with static helper functions
+    - `time_utils.gd` - Time formatting and manipulation utilities
 - `themes/` - Godot theme resources (.tres)
   - `main_menu.tres` - UI theme with italic SystemFont and custom button styling
 - `translations/` - Localization files
@@ -61,12 +65,41 @@ Manages game settings and persists them via FileManager:
 
 Handles multi-language support using Godot's TranslationServer:
 
-- Supports English (en) and Hungarian (hu)
+- Supports English (en), German (de), Hungarian (hu), and Japanese (ja)
 - Auto-detects system language on first run
 - Persists language preference via FileManager
 - Uses CSV translation files (translations/translations.csv)
 - Emits `language_changed` signal for runtime updates
 - Singleton accessible via `LocalizationManager` global
+
+### TooltipManager (scripts/tooltip_manager.gd)
+
+Dynamic tooltip system with advanced features:
+
+- Function-based tooltip content (supports dynamic/state-aware tooltips)
+- Automatic size calculation based on content
+- Flicker-free updates (uses invisible measurement panel)
+- BBCode rich text support
+- Localization integration
+- Configurable delay and update intervals
+- Singleton accessible via `TooltipManager` global
+
+### EventBus (scripts/event_bus.gd)
+
+Centralized event management system for global events:
+
+- Subscribe/unsubscribe to named events
+- Priority-based listener ordering
+- Event filtering with callbacks
+- Debouncing for high-frequency events
+- One-shot listeners (auto-remove after first call)
+- Event history and statistics for debugging
+- Singleton accessible via `EventBus` global
+
+**When to use EventBus vs Direct Signals:**
+- **Use EventBus for:** Cross-system communication, game state changes, achievements, analytics
+- **Use Direct Signals for:** Parent-child communication, high-frequency events, tightly coupled components
+- See `docs/event_architecture.md` for detailed guidelines and examples
 
 ## Localization System
 
