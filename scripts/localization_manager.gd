@@ -102,7 +102,7 @@ func set_language(locale: String):
 			break
 
 	if not is_valid:
-		push_warning("LocalizationManager: Invalid locale '%s'" % locale)
+		print("LocalizationManager: Invalid locale '%s'" % locale)
 		return
 
 	# Update language

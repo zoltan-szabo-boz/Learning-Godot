@@ -5,15 +5,34 @@ extends GutTest
 
 var initial_locale: String
 
+# Test callback state for EventBus tests
+var _event_received: bool = false
+var _received_locale: String = ""
+var _received_data: Dictionary = {}
+
 # Setup runs before each test
 func before_each():
 	# Store initial locale to restore after tests
 	initial_locale = LocalizationManager.current_language
 
+	# Reset EventBus test state
+	_event_received = false
+	_received_locale = ""
+	_received_data = {}
+
 # Teardown runs after each test
 func after_each():
 	# Restore initial locale
 	LocalizationManager.set_language(initial_locale)
+
+	# Clean up EventBus subscriptions
+	EventBus.unsubscribe("language_changed", _on_language_changed_test)
+
+# Callback for EventBus tests
+func _on_language_changed_test(data: Dictionary):
+	_event_received = true
+	_received_locale = data.get("locale", "")
+	_received_data = data
 
 # Test: LocalizationManager is loaded as singleton
 func test_localization_manager_exists():
@@ -62,13 +81,13 @@ func test_change_language_to_hungarian():
 
 # Test: Invalid language code is rejected
 # Note: This test validates that setting an invalid language doesn't change the current language
-# The warning logged by LocalizationManager is expected behavior
+# The warning logged by LocalizationManager is expected behavior and is intentionally not checked here
 func test_invalid_language_rejected():
 	# Set to a known valid language first
 	LocalizationManager.set_language("en")
 	var before_invalid = LocalizationManager.get_language()
 
-	# Try to set invalid language - this will log a warning but shouldn't change the language
+	# Try to set invalid language - this will log a warning (which is expected)
 	LocalizationManager.set_language("invalid")
 
 	# Language should remain unchanged
@@ -76,51 +95,27 @@ func test_invalid_language_rejected():
 
 # Test: Language changed event is emitted via EventBus
 func test_language_changed_event():
-	var event_received = false
-	var received_locale = ""
+	# Subscribe to EventBus event using instance method
+	EventBus.subscribe("language_changed", _on_language_changed_test)
 
-	# Subscribe to EventBus event
-	var callback = func(data: Dictionary):
-		event_received = true
-		received_locale = data.locale
-
-	EventBus.subscribe("language_changed", callback)
-
-	# Change language
+	# Change language (EventBus emits synchronously)
 	LocalizationManager.set_language("en")
 
-	# Wait a frame for event processing
-	await get_tree().process_frame
-
 	# Verify event was received
-	assert_true(event_received, "language_changed event should be emitted via EventBus")
-	assert_eq(received_locale, "en", "Event should contain correct locale 'en'")
-
-	# Cleanup
-	EventBus.unsubscribe("language_changed", callback)
+	assert_true(_event_received, "language_changed event should be emitted via EventBus")
+	assert_eq(_received_locale, "en", "Event should contain correct locale 'en'")
 
 # Test: Language changed event contains correct payload structure
 func test_language_changed_event_payload():
-	var received_data: Dictionary = {}
+	# Subscribe to EventBus event using instance method
+	EventBus.subscribe("language_changed", _on_language_changed_test)
 
-	# Subscribe to EventBus event
-	var callback = func(data: Dictionary):
-		received_data = data
-
-	EventBus.subscribe("language_changed", callback)
-
-	# Change language
+	# Change language (EventBus emits synchronously)
 	LocalizationManager.set_language("hu")
 
-	# Wait a frame for event processing
-	await get_tree().process_frame
-
 	# Verify payload structure
-	assert_true(received_data.has("locale"), "Event payload should have 'locale' key")
-	assert_eq(received_data.locale, "hu", "Event payload locale should be 'hu'")
-
-	# Cleanup
-	EventBus.unsubscribe("language_changed", callback)
+	assert_true(_received_data.has("locale"), "Event payload should have 'locale' key")
+	assert_eq(_received_data.locale, "hu", "Event payload locale should be 'hu'")
 
 # Test: Translation works for English
 func test_translation_english():
