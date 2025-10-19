@@ -1,2 +1,35 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
+
+# GDScript files
+*.gd text eol=lf
+*.tres text eol=lf
+*.tscn text eol=lf
+
+# Configuration files
+*.cfg text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.csv text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+
+# Docker files
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+
+# Translation files (binary format, but just in case)
+*.translation binary
+
+# Binary assets (don't convert)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.svg binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.wav binary
+*.mp3 binary
+*.ogg binary

@@ -30,13 +30,16 @@ This is a Godot 4.5 learning project configured with GL Compatibility rendering.
 ## Scene Navigation
 
 The project uses `get_tree().change_scene_to_file()` for scene transitions:
+
 - Main menu → Game: `res://scenes/game.tscn` (scripts/main_menu.gd:16)
 - Game → Main menu: `res://scenes/main_menu.tscn` (scripts/game.gd:4)
 
 ## Core Systems
 
 ### FileManager (scripts/file_manager.gd)
+
 Filesystem abstraction layer designed for console compatibility:
+
 - Mount/unmount support for console platforms
 - Write queue with auto-flush timer (5 second interval)
 - Batched writes to reduce I/O operations
@@ -45,7 +48,9 @@ Filesystem abstraction layer designed for console compatibility:
 - Singleton accessible via `FileManager` global
 
 ### ConfigManager (scripts/config_manager.gd)
+
 Manages game settings and persists them via FileManager:
+
 - Resolution settings (1920x1080, 1280x720, 1600x900, 1366x768, 1024x768)
 - Fullscreen mode toggle
 - Settings stored in `user://config.cfg`
@@ -53,7 +58,9 @@ Manages game settings and persists them via FileManager:
 - Singleton accessible via `ConfigManager` global
 
 ### LocalizationManager (scripts/localization_manager.gd)
+
 Handles multi-language support using Godot's TranslationServer:
+
 - Supports English (en) and Hungarian (hu)
 - Auto-detects system language on first run
 - Persists language preference via FileManager
@@ -66,11 +73,13 @@ Handles multi-language support using Godot's TranslationServer:
 The project uses Godot's built-in localization with CSV translation files:
 
 ### Adding Translatable Text
+
 1. **In scenes (.tscn)**: Set text properties to UPPERCASE keys (e.g., `text = "BUTTON_START_GAME"`)
 2. **In scripts (.gd)**: Use `tr("KEY")` function for dynamic text (e.g., `print(tr("MESSAGE_STARTING_GAME"))`)
 3. **Add keys to CSV**: Update `translations/translations.csv` with key and translations
 
 ### Translation Keys Convention
+
 - Use UPPERCASE for all keys (e.g., `GAME_TITLE`, `BUTTON_OPTIONS`)
 - Prefix categories: `BUTTON_*`, `LABEL_*`, `MESSAGE_*`, `TOOLTIP_*`, `LANGUAGE_*`
 - Scene elements auto-translate on language change
@@ -89,6 +98,7 @@ This project uses GUT (Godot Unit Test) for automated testing. All core systems 
 ### Running Tests
 
 **In Godot Editor:**
+
 1. Open the GUT panel (bottom panel tabs)
 2. Click "Run All" to execute all tests
 3. View results in the panel
@@ -111,6 +121,7 @@ docker-compose run --rm shell
 **Important:** Always use the `--rm` flag to automatically remove containers after they exit. This prevents container buildup.
 
 **Docker Setup:**
+
 - Uses `barichello/godot-ci:4.5` base image
 - Tests run via GUT command-line interface (`addons/gut/gut_cmdln.gd`)
 - Project mounted at `/workspace` in container
@@ -126,6 +137,7 @@ Follow these conventions when writing tests:
 1. **File Naming:** `test_<system_name>.gd` (e.g., `test_localization_manager.gd`)
 
 2. **Test Structure:**
+
 ```gdscript
 extends GutTest
 
@@ -145,6 +157,7 @@ func test_something():
 ```
 
 3. **Common Assertions:**
+
    - `assert_eq(a, b, msg)` - Assert equal
    - `assert_ne(a, b, msg)` - Assert not equal
    - `assert_true(condition, msg)` - Assert true
@@ -154,10 +167,12 @@ func test_something():
    - `assert_signal_emitted(object, signal_name, msg)` - Assert signal was emitted
 
 4. **Testing Singletons:**
+
    - Access autoload singletons directly: `LocalizationManager`, `ConfigManager`, `FileManager`
    - Remember to restore state in `after_each()` to prevent test pollution
 
 5. **Testing Scenes:**
+
    - Preload scene: `var scene = preload("res://scenes/main_menu.tscn")`
    - Instantiate: `var instance = scene.instantiate()`
    - Add to tree: `add_child(instance)`
@@ -191,6 +206,7 @@ When implementing new features:
 ### Test Coverage Targets
 
 All core systems should have tests covering:
+
 - **FileManager:** File operations, mount/unmount, queue/flush, platform detection
 - **ConfigManager:** Settings load/save, resolution changes, fullscreen toggle
 - **LocalizationManager:** Language switching, translation key lookup, persistence (✅ Implemented)
@@ -217,20 +233,25 @@ The project uses automatic code formatting for GDScript files to maintain consis
 ### VSCode Setup
 
 The project is configured for automatic formatting in VSCode:
+
 - **Extension Required:** `godot-tools` by geequlim (recommended in `.vscode/extensions.json`)
 - **Format on Save:** Enabled (configured in `.vscode/settings.json`)
 - **Indentation:** Tabs (4 spaces wide)
+- **Line Endings:** LF (Unix-style) - enforced by `.gitattributes` and `.editorconfig`
 - **Max Line Length:** 100 characters
 
 ### Configuration Files
 
 - `.gdformat` - Formatter configuration (tabs, line length, etc.)
-- `.vscode/settings.json` - VSCode editor settings (format on save, tab size)
+- `.editorconfig` - Editor configuration (line endings, indentation, charset)
+- `.gitattributes` - Git configuration (enforces LF line endings on commit)
+- `.vscode/settings.json` - VSCode editor settings (format on save, tab size, line endings)
 - `.vscode/extensions.json` - Recommended extensions for the project
 
 ### Manual Formatting
 
 To format a file manually:
+
 - **Windows/Linux:** `Shift+Alt+F`
 - **Mac:** `Shift+Option+F`
 - **Command Palette:** "Format Document"
@@ -238,8 +259,17 @@ To format a file manually:
 ### Formatting Rules
 
 - **Indentation:** Always use tabs (not spaces)
+- **Line Endings:** Always use LF (`\n`), never CRLF (`\r\n`)
 - **Line Length:** Keep lines under 100 characters when possible
 - **Type Hints:** Always include type hints for variables and function parameters
 - **Naming:** Follow GDScript conventions (snake_case for functions/variables, PascalCase for classes)
+
+### Line Ending Enforcement
+
+The project enforces LF line endings to prevent Git conflicts:
+
+- **`.gitattributes`** ensures all text files use LF on commit
+- **`.editorconfig`** configures editors to use LF
+- **`.vscode/settings.json`** sets VSCode to use LF (`files.eol: "\n"`)
 
 See `docs/code_formatting.md` for detailed formatting guidelines and troubleshooting.
