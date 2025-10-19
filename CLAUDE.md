@@ -184,7 +184,6 @@ When implementing new features:
 
 ### Existing Test Coverage
 
-- ✅ `test_calculator.gd` - Calculator utility tests
 - ✅ `test_game.gd` - Game scene tests
 - ✅ `test_main_menu.gd` - Main menu scene and UI tests
 - ✅ `test_localization_manager.gd` - Localization system tests
