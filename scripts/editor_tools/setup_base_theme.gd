@@ -170,6 +170,75 @@ func _run():
 	theme.set_color("font_color", "CheckButton", Color(1.0, 1.0, 1.0, 1.0))
 
 	# ========================================================================
+	# TAB CONTAINER
+	# ========================================================================
+
+	# TabContainer panel background
+	var tab_panel := StyleBoxFlat.new()
+	tab_panel.bg_color = Color(0.15, 0.15, 0.15, 0.95)
+	tab_panel.set_border_width_all(1)
+	tab_panel.border_color = Color(0.4, 0.4, 0.4, 1.0)
+	tab_panel.set_corner_radius_all(4)
+	tab_panel.content_margin_left = 8
+	tab_panel.content_margin_right = 8
+	tab_panel.content_margin_top = 8
+	tab_panel.content_margin_bottom = 8
+	theme.set_stylebox("panel", "TabContainer", tab_panel)
+
+	# Tab bar background (the area where tab buttons sit)
+	var tab_bar_bg := StyleBoxFlat.new()
+	tab_bar_bg.bg_color = Color(0.2, 0.2, 0.2, 0.9)
+	tab_bar_bg.set_border_width_all(0)
+	tab_bar_bg.set_corner_radius_all(4)
+	theme.set_stylebox("tabbar_background", "TabContainer", tab_bar_bg)
+
+	# Selected tab
+	var tab_selected := StyleBoxFlat.new()
+	tab_selected.bg_color = Color(0.2, 0.6, 0.8, 1.0)  # ThemeColors.PRIMARY
+	tab_selected.set_corner_radius_all(4)
+	tab_selected.content_margin_left = 12
+	tab_selected.content_margin_right = 12
+	tab_selected.content_margin_top = 6
+	tab_selected.content_margin_bottom = 6
+	theme.set_stylebox("tab_selected", "TabContainer", tab_selected)
+
+	# Unselected tab
+	var tab_unselected := StyleBoxFlat.new()
+	tab_unselected.bg_color = Color(0.25, 0.25, 0.25, 0.9)  # ThemeColors.BG_MEDIUM
+	tab_unselected.set_corner_radius_all(4)
+	tab_unselected.content_margin_left = 12
+	tab_unselected.content_margin_right = 12
+	tab_unselected.content_margin_top = 6
+	tab_unselected.content_margin_bottom = 6
+	theme.set_stylebox("tab_unselected", "TabContainer", tab_unselected)
+
+	# Tab hover state
+	var tab_hover := StyleBoxFlat.new()
+	tab_hover.bg_color = Color(0.3, 0.3, 0.3, 0.9)
+	tab_hover.set_corner_radius_all(4)
+	tab_hover.content_margin_left = 12
+	tab_hover.content_margin_right = 12
+	tab_hover.content_margin_top = 6
+	tab_hover.content_margin_bottom = 6
+	theme.set_stylebox("tab_hovered", "TabContainer", tab_hover)
+
+	# Tab disabled state
+	var tab_disabled := StyleBoxFlat.new()
+	tab_disabled.bg_color = Color(0.2, 0.2, 0.2, 0.5)
+	tab_disabled.set_corner_radius_all(4)
+	tab_disabled.content_margin_left = 12
+	tab_disabled.content_margin_right = 12
+	tab_disabled.content_margin_top = 6
+	tab_disabled.content_margin_bottom = 6
+	theme.set_stylebox("tab_disabled", "TabContainer", tab_disabled)
+
+	# Tab text colors
+	theme.set_color("font_selected_color", "TabContainer", Color(1.0, 1.0, 1.0, 1.0))
+	theme.set_color("font_unselected_color", "TabContainer", Color(0.85, 0.85, 0.85, 1.0))
+	theme.set_color("font_hovered_color", "TabContainer", Color(1.0, 1.0, 1.0, 1.0))
+	theme.set_color("font_disabled_color", "TabContainer", Color(0.5, 0.5, 0.5, 1.0))
+
+	# ========================================================================
 	# SAVE THEME
 	# ========================================================================
 
@@ -184,6 +253,7 @@ func _run():
 		print("  - VBoxContainer/HBoxContainer separation (20px)")
 		print("  - Button styling (primary colors)")
 		print("  - Label, OptionButton, CheckButton styling")
+		print("  - TabContainer styling (tabs and panel)")
 		print("")
 		print("The project should now work correctly!")
 	else:

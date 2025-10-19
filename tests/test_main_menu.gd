@@ -88,15 +88,25 @@ func test_quit_button_functionality():
 		var connections = quit_button.pressed.get_connections()
 		assert_gt(connections.size(), 0, "Quit button should have signal connections")
 
-# Test: Options panel has resolution buttons
-func test_options_panel_has_resolution_buttons():
-	var res_1920 = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1920x1080")
-	var res_1280 = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1280x720")
-	var fullscreen = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Fullscreen")
+# Test: Options panel has TabContainer with Graphics and Language tabs
+func test_options_panel_has_tabcontainer():
+	var tab_container = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer")
+	var graphics_tab = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics")
+	var language_tab = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Language")
 
-	assert_not_null(res_1920, "1920x1080 button should exist")
-	assert_not_null(res_1280, "1280x720 button should exist")
+	assert_not_null(tab_container, "TabContainer should exist")
+	assert_not_null(graphics_tab, "Graphics tab should exist")
+	assert_not_null(language_tab, "Language tab should exist")
+
+# Test: Graphics tab has resolution dropdown and fullscreen checkbox
+func test_graphics_tab_has_controls():
+	var resolution_dropdown = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/ResolutionDropdown")
+	var fullscreen = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/Fullscreen")
+
+	assert_not_null(resolution_dropdown, "Resolution dropdown should exist")
 	assert_not_null(fullscreen, "Fullscreen checkbox should exist")
+	if resolution_dropdown:
+		assert_eq(resolution_dropdown.item_count, 5, "Resolution dropdown should have 5 options")
 
 # Test: Back button returns to main menu
 func test_back_button_returns_to_menu():
@@ -117,7 +127,7 @@ func test_back_button_returns_to_menu():
 
 # Test: Language dropdown exists and has all languages
 func test_language_dropdown_exists():
-	var language_dropdown = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageDropdown")
+	var language_dropdown = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Language/VBoxContainer/LanguageDropdown")
 
 	assert_not_null(language_dropdown, "Language dropdown should exist")
 	if language_dropdown:
@@ -126,7 +136,7 @@ func test_language_dropdown_exists():
 
 # Test: Selecting language from dropdown changes language
 func test_language_dropdown_changes_language():
-	var language_dropdown = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageDropdown")
+	var language_dropdown = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Language/VBoxContainer/LanguageDropdown")
 
 	if language_dropdown:
 		# Languages are sorted: English (0), German (1), Hungarian (2), Japanese (3)
@@ -165,3 +175,16 @@ func test_language_change_updates_ui():
 		# In Godot, labels with translation keys automatically update
 		# We verify the translation key is set (actual translation happens in engine)
 		assert_eq(title_label.text, "GAME_TITLE", "Label should use translation key")
+
+# Test: TabContainer tab titles update on language change
+func test_tab_titles_update_on_language_change():
+	var tab_container = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer")
+
+	if tab_container:
+		# Set to English
+		LocalizationManager.set_language("en")
+		await get_tree().process_frame
+		# Tab titles should be updated programmatically
+		# We can't easily test the exact translated text, but we can verify they're not empty
+		assert_gt(tab_container.get_tab_title(0).length(), 0, "Graphics tab title should not be empty")
+		assert_gt(tab_container.get_tab_title(1).length(), 0, "Language tab title should not be empty")

@@ -2,15 +2,23 @@ extends Control
 
 @onready var main_menu_panel = $MarginContainer/HBoxContainer/MainMenuPanel
 @onready var options_panel = $MarginContainer/HBoxContainer/OptionsPanel
-@onready var fullscreen_check = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Fullscreen
-@onready var language_dropdown = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageDropdown
+@onready var tab_container = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer
+@onready var resolution_dropdown = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/ResolutionDropdown
+@onready var fullscreen_check = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/Fullscreen
+@onready var language_dropdown = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Language/VBoxContainer/LanguageDropdown
 
 func _ready():
 	# Initialize fullscreen checkbox state from config
 	fullscreen_check.button_pressed = ConfigManager.config.fullscreen
 
+	# Populate resolution dropdown
+	_populate_resolution_dropdown()
+
 	# Populate language dropdown
 	_populate_language_dropdown()
+
+	# Update tab titles for localization
+	_update_tab_titles()
 
 	# Subscribe to language change events via EventBus
 	EventBus.subscribe("language_changed", _on_language_changed)
@@ -55,9 +63,48 @@ func _on_back_to_menu_pressed():
 	options_panel.hide()
 	main_menu_panel.show()
 
-func _on_resolution_pressed(width: int, height: int):
-	# Change the window resolution and save to config
-	print(tr("MESSAGE_RESOLUTION_CHANGED") % [width, height])
+func _populate_resolution_dropdown():
+	# Clear existing items
+	resolution_dropdown.clear()
+
+	# Available resolutions (width, height, translation_key)
+	var resolutions = [
+		[1920, 1080, "RESOLUTION_1920X1080"],
+		[1600, 900, "RESOLUTION_1600X900"],
+		[1366, 768, "RESOLUTION_1366X768"],
+		[1280, 720, "RESOLUTION_1280X720"],
+		[1024, 768, "RESOLUTION_1024X768"]
+	]
+
+	# Get current resolution
+	var current_res = ConfigManager.config.resolution
+	var current_index = 0
+
+	# Add all resolutions to dropdown
+	for i in range(resolutions.size()):
+		var res = resolutions[i]
+		resolution_dropdown.add_item(tr(res[2]), i)
+
+		# Check if this is the current resolution
+		if current_res.x == res[0] and current_res.y == res[1]:
+			current_index = i
+
+	# Select the current resolution
+	resolution_dropdown.select(current_index)
+
+func _on_resolution_dropdown_selected(index: int):
+	# Resolution mappings matching the dropdown order
+	var resolutions = [
+		Vector2i(1920, 1080),
+		Vector2i(1600, 900),
+		Vector2i(1366, 768),
+		Vector2i(1280, 720),
+		Vector2i(1024, 768)
+	]
+
+	# Get the selected resolution
+	var selected_res = resolutions[index]
+	print(tr("MESSAGE_RESOLUTION_CHANGED") % [selected_res.x, selected_res.y])
 
 	# If in fullscreen mode, switch to windowed first
 	if ConfigManager.config.fullscreen:
@@ -65,7 +112,7 @@ func _on_resolution_pressed(width: int, height: int):
 		fullscreen_check.button_pressed = false
 
 	# Set the window size through ConfigManager
-	ConfigManager.set_resolution(Vector2i(width, height))
+	ConfigManager.set_resolution(selected_res)
 
 func _on_fullscreen_toggled(toggled_on: bool):
 	# Toggle fullscreen mode and save to config
@@ -105,10 +152,21 @@ func _populate_language_dropdown():
 	# Set the dropdown to current language
 	language_dropdown.select(current_index)
 
+func _update_tab_titles():
+	# Update TabContainer tab titles with translated text
+	tab_container.set_tab_title(0, tr("TAB_GRAPHICS"))
+	tab_container.set_tab_title(1, tr("TAB_LANGUAGE"))
+
 func _on_language_changed(data: Dictionary):
 	# Repopulate dropdown to update translated language names
 	# data contains: {"locale": String}
 	_populate_language_dropdown()
+
+	# Update tab titles to reflect new language
+	_update_tab_titles()
+
+	# Update resolution dropdown to reflect new language
+	_populate_resolution_dropdown()
 
 func _on_language_dropdown_selected(index: int):
 	# Get the language code from the selected index

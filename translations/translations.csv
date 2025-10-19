@@ -6,7 +6,8 @@ BUTTON_QUIT,Quit,Beenden,Kilépés,終了
 BUTTON_START_GAME_TOOLTIP,Start the game,Spiel starten,Játék indítása,ゲームを開始する
 BUTTON_OPTIONS_TOOLTIP,Change the options,Optionen ändern,Beállítások módosítása,オプションを変更する
 BUTTON_QUIT_TOOLTIP,Exit the game,Spiel beenden,Kilépés a játékból,ゲームを終了する
-OPTIONS_TITLE,Options,Optionen,Beállítások,オプション
+TAB_GRAPHICS,Graphics,Grafik,Grafika,グラフィック
+TAB_LANGUAGE,Language,Sprache,Nyelv,言語
 LABEL_RESOLUTION,Resolution,Auflösung,Felbontás,解像度
 RESOLUTION_1920X1080,1920 x 1080 (Full HD),1920 x 1080 (Full HD),1920 x 1080 (Full HD),1920 x 1080 (フルHD)
 RESOLUTION_1280X720,1280 x 720 (HD),1280 x 720 (HD),1280 x 720 (HD),1280 x 720 (HD)

@@ -103,77 +103,54 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TopSpacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
 layout_mode = 2
-text = "OPTIONS_TITLE"
-horizontal_alignment = 1
-vertical_alignment = 1
+size_flags_vertical = 3
+current_tab = 0
 
-[node name="Separator" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 10)
+[node name="Graphics" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+metadata/_tab_name = "TAB_GRAPHICS"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics"]
 layout_mode = 2
 
-[node name="ResolutionLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+[node name="ResolutionLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
 text = "LABEL_RESOLUTION"
 horizontal_alignment = 1
 
-[node name="ResolutionMargin" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
-layout_mode = 2
-
-[node name="ResolutionContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin"]
-layout_mode = 2
-
-[node name="Res1920x1080" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
+[node name="ResolutionDropdown" type="OptionButton" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
-text = "RESOLUTION_1920X1080"
 
-[node name="Res1280x720" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
-custom_minimum_size = Vector2(0, 45)
+[node name="Spacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-text = "RESOLUTION_1280X720"
 
-[node name="Res1600x900" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
-custom_minimum_size = Vector2(0, 45)
-layout_mode = 2
-text = "RESOLUTION_1600X900"
-
-[node name="Res1366x768" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
-custom_minimum_size = Vector2(0, 45)
-layout_mode = 2
-text = "RESOLUTION_1366X768"
-
-[node name="Res1024x768" type="Button" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
-custom_minimum_size = Vector2(0, 45)
-layout_mode = 2
-text = "RESOLUTION_1024X768"
-
-[node name="Fullscreen" type="CheckButton" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer"]
+[node name="Fullscreen" type="CheckButton" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer"]
 layout_mode = 2
 text = "BUTTON_FULLSCREEN"
 
-[node name="ButtonSpacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 20)
+[node name="Language" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+metadata/_tab_name = "TAB_LANGUAGE"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Language"]
 layout_mode = 2
 
-[node name="LanguageLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
-layout_mode = 2
-text = "LABEL_LANGUAGE"
-horizontal_alignment = 1
-
-[node name="LanguageMargin" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
-layout_mode = 2
-
-[node name="LanguageDropdown" type="OptionButton" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin"]
+[node name="LanguageDropdown" type="OptionButton" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Language/VBoxContainer"]
 custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 
-[node name="ButtonSpacer2" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 20)
+[node name="ButtonSpacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="BackButtonMargin" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
@@ -184,18 +161,10 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "BUTTON_BACK_TO_MENU"
 
-[node name="BottomSpacer" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1920x1080" to="." method="_on_resolution_pressed" binds= [1920, 1080]]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1280x720" to="." method="_on_resolution_pressed" binds= [1280, 720]]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1600x900" to="." method="_on_resolution_pressed" binds= [1600, 900]]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1366x768" to="." method="_on_resolution_pressed" binds= [1366, 768]]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1024x768" to="." method="_on_resolution_pressed" binds= [1024, 768]]
-[connection signal="toggled" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Fullscreen" to="." method="_on_fullscreen_toggled"]
-[connection signal="item_selected" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageDropdown" to="." method="_on_language_dropdown_selected"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/ResolutionDropdown" to="." method="_on_resolution_dropdown_selected"]
+[connection signal="toggled" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="item_selected" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Language/VBoxContainer/LanguageDropdown" to="." method="_on_language_dropdown_selected"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/BackButtonMargin/BackButton" to="." method="_on_back_to_menu_pressed"]
