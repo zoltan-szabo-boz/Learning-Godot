@@ -37,6 +37,7 @@ var _current_hovered_node: Control = null
 var _hover_time: float = 0.0
 var _tooltip_visible: bool = false
 var _cached_tooltip_text: String = ""  # Cache to detect text changes
+var _is_updating: bool = false  # Prevent hiding during content updates
 
 # Tooltip UI elements
 var _tooltip_panel: PanelContainer
@@ -218,9 +219,10 @@ func _process(delta: float):
 			if _update_timer >= update_interval:
 				# Get new text from provider
 				var new_text = provider.get_text.call()
-				# Only update if text actually changed
-				if new_text != _cached_tooltip_text:
-					await _update_tooltip_content()
+				# Only update if text actually changed and not already updating
+				if new_text != _cached_tooltip_text and not _is_updating:
+					# Start update asynchronously (don't await in _process!)
+					_update_tooltip_content()
 				_update_timer = 0.0
 
 			# Update position every frame
@@ -243,6 +245,10 @@ func _show_tooltip():
 	tooltip_shown.emit(_current_hovered_node, text)
 
 func _hide_tooltip():
+	# Don't hide if we're in the middle of updating content
+	if _is_updating:
+		return
+
 	_tooltip_panel.visible = false
 	_tooltip_visible = false
 	_hover_time = 0.0
@@ -253,6 +259,9 @@ func _hide_tooltip():
 func _update_tooltip_content():
 	if not _current_hovered_node or not _providers.has(_current_hovered_node):
 		return
+
+	# Set flag to prevent hiding during update
+	_is_updating = true
 
 	var provider: TooltipProvider = _providers[_current_hovered_node]
 
@@ -298,21 +307,20 @@ func _update_tooltip_content():
 		measured_height = 30  # Fallback minimum
 
 	# === STEP 2: Apply measurements to visible tooltip atomically ===
-	# Reset visible tooltip
-	_tooltip_panel.custom_minimum_size = Vector2.ZERO
-	_tooltip_panel.size = Vector2.ZERO
-	_tooltip_label.custom_minimum_size = Vector2.ZERO
-	_tooltip_label.size = Vector2.ZERO
-
-	# Apply new content and exact measured size
+	# Don't reset! Just update directly to avoid flicker
+	# Update content and size in one go
 	_tooltip_label.text = "[center]" + tooltip_text + "[/center]"
 	_tooltip_label.custom_minimum_size = Vector2(target_width, measured_height)
 
-	# Let it resize
-	await get_tree().process_frame
+	# Force immediate size update without waiting (synchronous)
+	_tooltip_label.reset_size()
+	_tooltip_panel.reset_size()
 
 	# Cache the current text to detect changes
 	_cached_tooltip_text = tooltip_text
+
+	# Clear updating flag
+	_is_updating = false
 
 func _update_tooltip_position():
 	if not _tooltip_panel.visible:
