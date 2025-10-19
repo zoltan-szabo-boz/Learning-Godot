@@ -9,18 +9,22 @@ extends Node
 ## - Automatic language detection from OS
 ## - Language switching with TranslationServer
 ## - Persists language preference via FileManager
-## - Signals for UI to respond to language changes
+## - Emits events via EventBus for cross-system communication
 ##
 ## Usage:
 ## - Call LocalizationManager.set_language("en") to switch language
 ## - Use tr("KEY") in scripts for dynamic text translation
 ## - Set text properties to keys in scenes for auto-translation
+## - Subscribe to language changes: EventBus.subscribe("language_changed", callback)
 ##
 ## Available Languages:
 ## - en: English
+## - de: German (Deutsch)
 ## - hu: Hungarian (Magyar)
-
-signal language_changed(locale: String)
+## - ja: Japanese (日本語)
+##
+## EventBus Events:
+## - "language_changed" - Emitted when language changes (payload: {"locale": String})
 
 const CONFIG_FILE = "user://config.cfg"
 
@@ -98,7 +102,7 @@ func set_language(locale: String):
 			break
 
 	if not is_valid:
-		# Silently reject invalid locale
+		push_warning("LocalizationManager: Invalid locale '%s'" % locale)
 		return
 
 	# Update language
@@ -106,8 +110,9 @@ func set_language(locale: String):
 	apply_language()
 	save_language_preference()
 
-	# Emit signal for UI updates
-	language_changed.emit(locale)
+	# Emit via EventBus for cross-system communication
+	EventBus.emit("language_changed", {"locale": locale})
+
 	print("LocalizationManager: Language changed to %s" % locale)
 
 func get_language() -> String:

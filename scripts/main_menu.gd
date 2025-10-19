@@ -12,10 +12,14 @@ func _ready():
 	# Populate language dropdown
 	_populate_language_dropdown()
 
-	# Connect to language change signal to update dropdown translations
-	LocalizationManager.language_changed.connect(_on_language_changed)
+	# Subscribe to language change events via EventBus
+	EventBus.subscribe("language_changed", _on_language_changed)
 
 	_register_tooltips()
+
+func _exit_tree():
+	# Unsubscribe from EventBus when leaving tree
+	EventBus.unsubscribe("language_changed", _on_language_changed)
 
 func _register_tooltips():
 	# Dynamic tooltip with current time for demonstration
@@ -101,8 +105,9 @@ func _populate_language_dropdown():
 	# Set the dropdown to current language
 	language_dropdown.select(current_index)
 
-func _on_language_changed(_locale: String):
+func _on_language_changed(data: Dictionary):
 	# Repopulate dropdown to update translated language names
+	# data contains: {"locale": String}
 	_populate_language_dropdown()
 
 func _on_language_dropdown_selected(index: int):

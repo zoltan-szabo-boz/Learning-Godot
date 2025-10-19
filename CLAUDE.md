@@ -79,7 +79,8 @@ Handles multi-language support using Godot's TranslationServer:
 - Auto-detects system language on first run
 - Persists language preference via FileManager
 - Uses CSV translation files (translations/translations.csv)
-- Emits `language_changed` signal for runtime updates
+- Emits `language_changed` event via EventBus for cross-system updates
+- Subscribe with: `EventBus.subscribe("language_changed", callback)`
 - Singleton accessible via `LocalizationManager` global
 
 ### TooltipManager (scripts/tooltip_manager.gd)

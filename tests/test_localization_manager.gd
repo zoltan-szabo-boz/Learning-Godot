@@ -74,27 +74,53 @@ func test_invalid_language_rejected():
 	# Language should remain unchanged
 	assert_eq(LocalizationManager.get_language(), before_invalid, "Invalid language should not change current language")
 
-# Test: Language changed signal is emitted
-func test_language_changed_signal():
-	watch_signals(LocalizationManager)
+# Test: Language changed event is emitted via EventBus
+func test_language_changed_event():
+	var event_received = false
+	var received_locale = ""
 
+	# Subscribe to EventBus event
+	var callback = func(data: Dictionary):
+		event_received = true
+		received_locale = data.locale
+
+	EventBus.subscribe("language_changed", callback)
+
+	# Change language
 	LocalizationManager.set_language("en")
 
-	assert_signal_emitted(LocalizationManager, "language_changed", "Signal should be emitted when language changes")
+	# Wait a frame for event processing
+	await get_tree().process_frame
 
-# Test: Language changed signal contains correct locale
-func test_language_changed_signal_parameters():
-	watch_signals(LocalizationManager)
+	# Verify event was received
+	assert_true(event_received, "language_changed event should be emitted via EventBus")
+	assert_eq(received_locale, "en", "Event should contain correct locale 'en'")
 
+	# Cleanup
+	EventBus.unsubscribe("language_changed", callback)
+
+# Test: Language changed event contains correct payload structure
+func test_language_changed_event_payload():
+	var received_data: Dictionary = {}
+
+	# Subscribe to EventBus event
+	var callback = func(data: Dictionary):
+		received_data = data
+
+	EventBus.subscribe("language_changed", callback)
+
+	# Change language
 	LocalizationManager.set_language("hu")
 
-	# Verify signal was emitted
-	assert_signal_emitted(LocalizationManager, "language_changed", "Signal should be emitted")
+	# Wait a frame for event processing
+	await get_tree().process_frame
 
-	# Get the signal parameters manually and check them
-	var signal_params = get_signal_parameters(LocalizationManager, "language_changed", 0)
-	if signal_params != null and signal_params.size() > 0:
-		assert_eq(signal_params[0], "hu", "Signal parameter should be 'hu'")
+	# Verify payload structure
+	assert_true(received_data.has("locale"), "Event payload should have 'locale' key")
+	assert_eq(received_data.locale, "hu", "Event payload locale should be 'hu'")
+
+	# Cleanup
+	EventBus.unsubscribe("language_changed", callback)
 
 # Test: Translation works for English
 func test_translation_english():
