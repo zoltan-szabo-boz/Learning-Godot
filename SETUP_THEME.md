@@ -6,7 +6,7 @@ The project won't start because `base_theme.tres` needs to be created with the p
 
 1. **Open Godot Editor** with this project
 2. **Navigate to the setup script:**
-   - In FileSystem panel: `scripts/setup_base_theme.gd`
+   - In FileSystem panel: `scripts/editor_tools/setup_base_theme.gd`
 3. **Run the script:**
    - Click on `setup_base_theme.gd`
    - Go to menu: **File → Run**

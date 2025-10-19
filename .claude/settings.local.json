@@ -10,7 +10,11 @@
       "Bash(docker stop:*)",
       "Bash(docker ps:*)",
       "Bash(cat:*)",
-      "Bash(docker-compose build:*)"
+      "Bash(docker-compose build:*)",
+      "Bash(if [ -f \"D:\\Godot\\boz-godot-framework\\scripts\\setup_base_theme.gd.uid\" ])",
+      "Bash(then mv \"D:\\Godot\\boz-godot-framework\\scripts\\setup_base_theme.gd.uid\" \"D:\\Godot\\boz-godot-framework\\scripts\\editor_tools\\setup_base_theme.gd.uid\")",
+      "Bash(else echo \"No .uid file found\")",
+      "Bash(fi)"
     ],
     "deny": [],
     "ask": []

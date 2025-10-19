@@ -12,6 +12,7 @@ See: fonts/SETUP_FONTS.md
 ```
 
 Options:
+
 - **Quickest**: Use SystemFont (no files needed)
 - **Custom**: Import your own .ttf/.otf files
 
@@ -28,6 +29,7 @@ See: `docs/theme_system.md` - Section "Creating the Base Theme"
 
 **Option A - Global (Recommended):**
 Add to `project.godot`:
+
 ```gdscript
 [gui]
 theme/custom="res://themes/base_theme.tres"
@@ -163,12 +165,14 @@ var text_color := ThemeColors.get_contrasting_text_color(background_color)
 ## Best Practices
 
 ✅ **DO:**
+
 - Use ThemeColors constants instead of hardcoded Color values
 - Use ThemeConstants for spacing instead of magic numbers
 - Apply theme at scene root level
 - Create StyleBox programmatically with constants
 
 ❌ **DON'T:**
+
 - Hardcode colors like `Color(0.2, 0.6, 0.8)`
 - Use arbitrary spacing like `margin = 17`
 - Override theme in multiple places
@@ -182,12 +186,7 @@ var text_color := ThemeColors.get_contrasting_text_color(background_color)
   - `scripts/theme/theme_colors.gd`
   - `scripts/theme/theme_constants.gd`
 
-## Next Steps
+## Possible further steps
 
-1. ✅ Theme system components created
-2. ⏳ Create font resources (see `fonts/SETUP_FONTS.md`)
-3. ⏳ Create `base_theme.tres` (see `docs/theme_system.md`)
-4. ⏳ Apply theme globally or per-scene
-5. ⏳ Refactor existing scenes to use theme system
-6. ⏳ (Optional) Create ThemeManager singleton for runtime switching
-7. ⏳ (Optional) Create theme variants (dark/light modes)
+1. ⏳ (Optional) Create ThemeManager singleton for runtime switching
+2. ⏳ (Optional) Create theme variants (dark/light modes)

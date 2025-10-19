@@ -21,6 +21,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - `localization_manager.gd` - Singleton for language management
   - `tooltip_manager.gd` - Singleton for dynamic tooltip system
   - `event_bus.gd` - Singleton for global event management
+  - `editor_tools/` - Editor-only scripts for setup and maintenance (not game logic)
+    - `setup_base_theme.gd` - Generates base_theme.tres with framework defaults
   - `theme/` - Theme system classes
     - `theme_colors.gd` - Color palette constants and utilities
     - `theme_constants.gd` - Spacing, sizing, and layout constants
