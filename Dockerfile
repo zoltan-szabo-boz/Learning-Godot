@@ -9,8 +9,8 @@ WORKDIR /workspace
 # Copy project files
 COPY . /workspace
 
-# Install any additional dependencies here (if needed)
-# RUN apt-get update && apt-get install -y <package-name>
+# Install fontconfig to fix libfontconfig warning
+RUN apt-get update && apt-get install -y libfontconfig1 && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
 ENV GODOT_VERSION=4.5

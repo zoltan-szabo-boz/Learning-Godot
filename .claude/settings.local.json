@@ -9,7 +9,8 @@
       "Bash(docker logs:*)",
       "Bash(docker stop:*)",
       "Bash(docker ps:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(docker-compose build:*)"
     ],
     "deny": [],
     "ask": []
