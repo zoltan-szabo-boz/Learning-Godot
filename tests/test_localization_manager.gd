@@ -35,14 +35,16 @@ func test_language_codes():
 		codes.append(lang.code)
 
 	assert_true(codes.has("en"), "Should have English (en)")
+	assert_true(codes.has("de"), "Should have German (de)")
 	assert_true(codes.has("hu"), "Should have Hungarian (hu)")
+	assert_true(codes.has("ja"), "Should have Japanese (ja)")
 
 # Test: Current language is set
 func test_current_language_is_set():
 	var current = LocalizationManager.get_language()
 
 	assert_not_null(current, "Current language should be set")
-	assert_true(current == "en" or current == "hu", "Current language should be 'en' or 'hu'")
+	assert_true(current in ["en", "de", "hu", "ja"], "Current language should be 'en', 'de', 'hu', or 'ja'")
 
 # Test: Change language to English
 func test_change_language_to_english():
@@ -104,6 +106,16 @@ func test_translation_english():
 	var button = tr("BUTTON_START_GAME")
 	assert_eq(button, "Start Game", "BUTTON_START_GAME should translate to 'Start Game' in English")
 
+# Test: Translation works for German
+func test_translation_german():
+	LocalizationManager.set_language("de")
+
+	var translated = tr("GAME_TITLE")
+	assert_eq(translated, "Lerne Godot!", "GAME_TITLE should translate to 'Lerne Godot!' in German")
+
+	var button = tr("BUTTON_START_GAME")
+	assert_eq(button, "Spiel starten", "BUTTON_START_GAME should translate to 'Spiel starten' in German")
+
 # Test: Translation works for Hungarian
 func test_translation_hungarian():
 	LocalizationManager.set_language("hu")
@@ -113,6 +125,16 @@ func test_translation_hungarian():
 
 	var button = tr("BUTTON_START_GAME")
 	assert_eq(button, "Játék indítása", "BUTTON_START_GAME should translate to 'Játék indítása' in Hungarian")
+
+# Test: Translation works for Japanese
+func test_translation_japanese():
+	LocalizationManager.set_language("ja")
+
+	var translated = tr("GAME_TITLE")
+	assert_eq(translated, "Godotを学ぼう！", "GAME_TITLE should translate to 'Godotを学ぼう！' in Japanese")
+
+	var button = tr("BUTTON_START_GAME")
+	assert_eq(button, "ゲーム開始", "BUTTON_START_GAME should translate to 'ゲーム開始' in Japanese")
 
 # Test: Translation with string formatting works
 func test_translation_with_formatting():
@@ -131,8 +153,14 @@ func test_get_language_name():
 	var english_name = LocalizationManager.get_language_name("en")
 	assert_eq(english_name, "English", "English language name should be 'English'")
 
+	var german_name = LocalizationManager.get_language_name("de")
+	assert_eq(german_name, "Deutsch", "German language name should be 'Deutsch'")
+
 	var hungarian_name = LocalizationManager.get_language_name("hu")
 	assert_eq(hungarian_name, "Magyar", "Hungarian language name should be 'Magyar'")
+
+	var japanese_name = LocalizationManager.get_language_name("ja")
+	assert_eq(japanese_name, "日本語", "Japanese language name should be '日本語'")
 
 # Test: Get language name for unknown code
 func test_get_language_name_unknown():

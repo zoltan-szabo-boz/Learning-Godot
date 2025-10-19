@@ -3,10 +3,17 @@ extends Control
 @onready var main_menu_panel = $MarginContainer/HBoxContainer/MainMenuPanel
 @onready var options_panel = $MarginContainer/HBoxContainer/OptionsPanel
 @onready var fullscreen_check = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Fullscreen
+@onready var language_dropdown = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageDropdown
 
 func _ready():
 	# Initialize fullscreen checkbox state from config
 	fullscreen_check.button_pressed = ConfigManager.config.fullscreen
+
+	# Populate language dropdown
+	_populate_language_dropdown()
+
+	# Connect to language change signal to update dropdown translations
+	LocalizationManager.language_changed.connect(_on_language_changed)
 
 func _on_quit_pressed():
 	# Quits the application immediately
@@ -44,7 +51,43 @@ func _on_fullscreen_toggled(toggled_on: bool):
 	var message_key = "MESSAGE_FULLSCREEN_ENABLED" if toggled_on else "MESSAGE_FULLSCREEN_DISABLED"
 	print(tr(message_key))
 
-func _on_language_pressed(locale: String):
-	# Change language through LocalizationManager
-	LocalizationManager.set_language(locale)
-	print("Language changed to: %s" % locale)
+func _populate_language_dropdown():
+	# Clear existing items
+	language_dropdown.clear()
+
+	# Add all available languages
+	var current_language = LocalizationManager.get_language()
+	var current_index = 0
+
+	for i in range(LocalizationManager.available_languages.size()):
+		var lang = LocalizationManager.available_languages[i]
+		var display_name = ""
+
+		if lang.code == current_language:
+			# For the currently selected language, only show native name
+			# e.g., "Magyar" when Hungarian is selected
+			display_name = lang.name
+		else:
+			# For other languages, show translated name with native in parenthesis
+			# e.g., "Angol (English)" in Hungarian, or "German (Deutsch)" in English
+			var translated_name = tr(lang.translation_key)
+			display_name = translated_name + " (" + lang.name + ")"
+
+		language_dropdown.add_item(display_name, i)
+
+		# Track the current language index
+		if lang.code == current_language:
+			current_index = i
+
+	# Set the dropdown to current language
+	language_dropdown.select(current_index)
+
+func _on_language_changed(_locale: String):
+	# Repopulate dropdown to update translated language names
+	_populate_language_dropdown()
+
+func _on_language_dropdown_selected(index: int):
+	# Get the language code from the selected index
+	var lang = LocalizationManager.available_languages[index]
+	LocalizationManager.set_language(lang.code)
+	print("Language changed to: %s" % lang.code)

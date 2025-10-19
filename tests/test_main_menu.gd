@@ -115,29 +115,44 @@ func test_back_button_returns_to_menu():
 		assert_true(main_panel.visible, "Main panel should be visible after going back")
 		assert_false(options_panel.visible, "Options panel should be hidden after going back")
 
-# Test: Language selector buttons exist
-func test_language_buttons_exist():
-	var lang_english = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangEnglish")
-	var lang_hungarian = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangHungarian")
+# Test: Language dropdown exists and has all languages
+func test_language_dropdown_exists():
+	var language_dropdown = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageDropdown")
 
-	assert_not_null(lang_english, "English language button should exist")
-	assert_not_null(lang_hungarian, "Hungarian language button should exist")
+	assert_not_null(language_dropdown, "Language dropdown should exist")
+	if language_dropdown:
+		# Should have 4 languages: English, German, Hungarian, Japanese
+		assert_eq(language_dropdown.item_count, 4, "Dropdown should have 4 language options")
 
-# Test: Clicking language button changes language
-func test_language_button_changes_language():
-	var lang_english = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangEnglish")
-	var lang_hungarian = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageContainer/LangHungarian")
+# Test: Selecting language from dropdown changes language
+func test_language_dropdown_changes_language():
+	var language_dropdown = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageDropdown")
 
-	if lang_english and lang_hungarian:
-		# Set to English
-		lang_english.pressed.emit()
+	if language_dropdown:
+		# Languages are sorted: English (0), German (1), Hungarian (2), Japanese (3)
+		# Set to English (index 0)
+		language_dropdown.select(0)
+		language_dropdown.item_selected.emit(0)
 		await get_tree().process_frame
 		assert_eq(LocalizationManager.get_language(), "en", "Language should change to English")
 
-		# Set to Hungarian
-		lang_hungarian.pressed.emit()
+		# Set to German (index 1)
+		language_dropdown.select(1)
+		language_dropdown.item_selected.emit(1)
+		await get_tree().process_frame
+		assert_eq(LocalizationManager.get_language(), "de", "Language should change to German")
+
+		# Set to Hungarian (index 2)
+		language_dropdown.select(2)
+		language_dropdown.item_selected.emit(2)
 		await get_tree().process_frame
 		assert_eq(LocalizationManager.get_language(), "hu", "Language should change to Hungarian")
+
+		# Set to Japanese (index 3)
+		language_dropdown.select(3)
+		language_dropdown.item_selected.emit(3)
+		await get_tree().process_frame
+		assert_eq(LocalizationManager.get_language(), "ja", "Language should change to Japanese")
 
 # Test: Language change updates UI text
 func test_language_change_updates_ui():

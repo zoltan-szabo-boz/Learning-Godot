@@ -8,7 +8,8 @@
       "WebFetch(domain:docs.godotengine.org)",
       "Bash(docker logs:*)",
       "Bash(docker stop:*)",
-      "Bash(docker ps:*)"
+      "Bash(docker ps:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

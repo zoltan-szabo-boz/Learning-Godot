@@ -25,9 +25,14 @@ signal language_changed(locale: String)
 const CONFIG_FILE = "user://config.cfg"
 
 # Available languages in the game
+# Sorted: English first, then alphabetically by name
+# name: Native language name (shown in dropdown)
+# translation_key: Key used to get translated name in other languages
 var available_languages = [
-	{"code": "en", "name": "English"},
-	{"code": "hu", "name": "Magyar"}
+	{"code": "en", "name": "English", "translation_key": "LANGUAGE_ENGLISH"},
+	{"code": "de", "name": "Deutsch", "translation_key": "LANGUAGE_GERMAN"},
+	{"code": "hu", "name": "Magyar", "translation_key": "LANGUAGE_HUNGARIAN"},
+	{"code": "ja", "name": "日本語", "translation_key": "LANGUAGE_JAPANESE"}
 ]
 
 var current_language: String = "en"

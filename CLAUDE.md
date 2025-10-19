@@ -205,3 +205,7 @@ This project must be opened and run through the Godot 4.5 editor. Use the editor
 - The `.godot/` directory contains editor cache and metadata - excluded from git
 - GDScript files use tabs for indentation
 - Scene connections use signal bindings (e.g., `[connection signal="pressed" from="..." to="..." method="..."]`)
+- **When removing/renaming files:** Always handle both `.gd` and `.gd.uid` files together
+  - Example: Removing `calculator.gd` also requires removing `calculator.gd.uid`
+  - Example: Renaming `old_script.gd` to `new_script.gd` also requires renaming `old_script.gd.uid` to `new_script.gd.uid`
+  - UID files track Godot's internal resource IDs and must stay in sync with their corresponding scripts
