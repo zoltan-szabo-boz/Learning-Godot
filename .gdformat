@@ -1,0 +1,12 @@
+# GDFormat configuration file
+# https://github.com/Scony/godot-gdscript-toolkit
+
+# Indentation
+indent_size = 1
+indent_type = "Tabs"
+
+# Line length
+line_length = 100
+
+# Formatting options
+max_line_length = 100

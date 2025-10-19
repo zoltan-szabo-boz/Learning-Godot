@@ -209,3 +209,37 @@ This project must be opened and run through the Godot 4.5 editor. Use the editor
   - Example: Removing `calculator.gd` also requires removing `calculator.gd.uid`
   - Example: Renaming `old_script.gd` to `new_script.gd` also requires renaming `old_script.gd.uid` to `new_script.gd.uid`
   - UID files track Godot's internal resource IDs and must stay in sync with their corresponding scripts
+
+## Code Formatting
+
+The project uses automatic code formatting for GDScript files to maintain consistency.
+
+### VSCode Setup
+
+The project is configured for automatic formatting in VSCode:
+- **Extension Required:** `godot-tools` by geequlim (recommended in `.vscode/extensions.json`)
+- **Format on Save:** Enabled (configured in `.vscode/settings.json`)
+- **Indentation:** Tabs (4 spaces wide)
+- **Max Line Length:** 100 characters
+
+### Configuration Files
+
+- `.gdformat` - Formatter configuration (tabs, line length, etc.)
+- `.vscode/settings.json` - VSCode editor settings (format on save, tab size)
+- `.vscode/extensions.json` - Recommended extensions for the project
+
+### Manual Formatting
+
+To format a file manually:
+- **Windows/Linux:** `Shift+Alt+F`
+- **Mac:** `Shift+Option+F`
+- **Command Palette:** "Format Document"
+
+### Formatting Rules
+
+- **Indentation:** Always use tabs (not spaces)
+- **Line Length:** Keep lines under 100 characters when possible
+- **Type Hints:** Always include type hints for variables and function parameters
+- **Naming:** Follow GDScript conventions (snake_case for functions/variables, PascalCase for classes)
+
+See `docs/code_formatting.md` for detailed formatting guidelines and troubleshooting.

@@ -15,12 +15,17 @@ func _ready():
 	# Connect to language change signal to update dropdown translations
 	LocalizationManager.language_changed.connect(_on_language_changed)
 
+	# Register tooltip for start button
+	TooltipManager.register_tooltip(
+		$MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Start,
+		func(): return tr("TOOLTIP_START_GAME")
+	)
+
 func _on_quit_pressed():
 	# Quits the application immediately
 	get_tree().quit()
 
 func _on_start_pressed():
-	print(tr("MESSAGE_STARTING_GAME"))
 	get_tree().change_scene_to_file("res://scenes/game.tscn")
 
 func _on_options_pressed():
@@ -71,7 +76,8 @@ func _populate_language_dropdown():
 			# For other languages, show translated name with native in parenthesis
 			# e.g., "Angol (English)" in Hungarian, or "German (Deutsch)" in English
 			var translated_name = tr(lang.translation_key)
-			display_name = translated_name + " (" + lang.name + ")"
+			if translated_name != lang.name:
+				display_name = translated_name + " (" + lang.name + ")"
 
 		language_dropdown.add_item(display_name, i)
 
