@@ -1,8 +1,0 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dhrnlju01mk8j"]
-
-[sub_resource type="SystemFont" id="SystemFont_vue75"]
-font_italic = true
-
-[resource]
-default_base_scale = 1.53
-default_font = SubResource("SystemFont_vue75")

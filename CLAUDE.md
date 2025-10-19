@@ -21,13 +21,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - `localization_manager.gd` - Singleton for language management
   - `tooltip_manager.gd` - Singleton for dynamic tooltip system
   - `event_bus.gd` - Singleton for global event management
+  - `theme/` - Theme system classes
+    - `theme_colors.gd` - Color palette constants and utilities
+    - `theme_constants.gd` - Spacing, sizing, and layout constants
   - `utils/` - Utility classes with static helper functions
     - `time_utils.gd` - Time formatting and manipulation utilities
 - `themes/` - Godot theme resources (.tres)
-  - `main_menu.tres` - UI theme with italic SystemFont and custom button styling
+  - `fonts/` - Font resources (header, body, ui)
+  - `base_theme.tres` - Main comprehensive theme (to be created)
+  - `main_menu.tres` - Legacy theme (being phased out)
 - `translations/` - Localization files
   - `translations.csv` - Translation keys for all UI text (en, hu)
 - `tests/` - Automated test files using GUT framework
+- `docs/` - Documentation files
+  - `theme_system.md` - Comprehensive theme system documentation
+  - `event_architecture.md` - Event system architecture guide
 - `Dockerfile` - Docker image definition for headless testing
 - `docker-compose.yml` - Docker services: test, validate, shell
 
@@ -100,6 +108,78 @@ Centralized event management system for global events:
 - **Use EventBus for:** Cross-system communication, game state changes, achievements, analytics
 - **Use Direct Signals for:** Parent-child communication, high-frequency events, tightly coupled components
 - See `docs/event_architecture.md` for detailed guidelines and examples
+
+## Theme System
+
+Comprehensive theming system for maintaining visual consistency across the entire framework.
+
+### Theme Components
+
+#### ThemeColors (scripts/theme/theme_colors.gd)
+
+Centralized color palette with constants for all UI colors:
+
+- **Primary colors**: Main brand/accent colors (PRIMARY, PRIMARY_HOVER, PRIMARY_PRESSED, PRIMARY_DISABLED)
+- **Secondary colors**: Less prominent UI elements
+- **Background colors**: Panels and overlays (BG_DARK, BG_MEDIUM, BG_LIGHT, BG_OVERLAY, BG_TRANSPARENT)
+- **Text colors**: Text hierarchy (TEXT_PRIMARY, TEXT_SECONDARY, TEXT_TERTIARY, TEXT_DISABLED, TEXT_INVERTED)
+- **Status colors**: Feedback states (SUCCESS, WARNING, ERROR, INFO)
+- **Border colors**: Outlines and separators
+- **Utility functions**: `with_alpha()`, `darken()`, `lighten()`, `blend()`, `get_contrasting_text_color()`
+
+#### ThemeConstants (scripts/theme/theme_constants.gd)
+
+Spacing, sizing, and layout constants:
+
+- **Spacing scale**: SPACING_TINY (4px) through SPACING_HUGE (48px) - based on 8px grid
+- **Component sizes**: Button heights, icon sizes, input heights, panel minimums
+- **Font sizes**: FONT_SIZE_TINY (10px) through FONT_SIZE_MASSIVE (48px)
+- **Borders & corners**: Border widths and corner radius values
+- **Animation durations**: Standard timing values (0.1s to 0.8s)
+- **Z-index layers**: LAYER_BACKGROUND through LAYER_TOP
+- **Responsive breakpoints**: Mobile (640), Tablet (1024), Desktop (1280), Wide (1920)
+- **Utility functions**: Responsive helpers, viewport size checks
+
+#### Font Resources (themes/fonts/)
+
+Three font types for different purposes:
+
+- **header.tres**: Bold fonts for titles (weight: 700, size: 32)
+- **body.tres**: Regular fonts for body text (weight: 400, size: 14)
+- **ui.tres**: Medium fonts for UI elements (weight: 500, size: 14)
+
+See `themes/fonts/SETUP_FONTS.md` for font setup instructions.
+
+#### Base Theme Resource (themes/base_theme.tres)
+
+Main theme resource that styles all Godot Control nodes. Apply globally in project.godot or per-scene.
+
+### Using the Theme System
+
+**In GDScript:**
+```gdscript
+# Use color constants
+var style := StyleBoxFlat.new()
+style.bg_color = ThemeColors.BG_DARK
+style.border_color = ThemeColors.BORDER
+style.corner_radius_all = ThemeConstants.CORNER_RADIUS_MEDIUM
+
+# Use spacing constants
+margin.add_theme_constant_override("margin_left", ThemeConstants.SPACING_LARGE)
+
+# Use utility functions
+var hover_color := ThemeColors.lighten(ThemeColors.PRIMARY, 0.1)
+var semi_transparent := ThemeColors.with_alpha(ThemeColors.BG_DARK, 0.5)
+```
+
+**Best Practices:**
+- Always use ThemeColors constants instead of hardcoding Color() values
+- Use ThemeConstants for all spacing/sizing instead of magic numbers
+- Apply base_theme.tres globally or at scene root level
+- Use theme_overrides sparingly for exceptions only
+- Leverage utility functions for dynamic color adjustments
+
+**Complete documentation:** See `docs/theme_system.md` for comprehensive usage guide, examples, and best practices.
 
 ## Localization System
 
