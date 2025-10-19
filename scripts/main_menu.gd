@@ -18,9 +18,10 @@ func _ready():
 	_register_tooltips()
 
 func _register_tooltips():
+	# Dynamic tooltip with current time for demonstration
 	TooltipManager.register_tooltip(
 		$MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Start,
-		func(): return tr("BUTTON_START_GAME_TOOLTIP")
+		func(): return tr("BUTTON_START_GAME_TOOLTIP") + "\n" + _get_current_time()
 	)
 
 	TooltipManager.register_tooltip(
@@ -109,3 +110,8 @@ func _on_language_dropdown_selected(index: int):
 	var lang = LocalizationManager.available_languages[index]
 	LocalizationManager.set_language(lang.code)
 	print("Language changed to: %s" % lang.code)
+
+func _get_current_time() -> String:
+	# Get current time and format as HH:MM:SS
+	var time = Time.get_time_dict_from_system()
+	return "%02d:%02d:%02d" % [time.hour, time.minute, time.second]

@@ -42,6 +42,8 @@ var _cached_tooltip_text: String = ""  # Cache to detect text changes
 var _tooltip_panel: PanelContainer
 var _tooltip_label: RichTextLabel
 var _tooltip_container: Control
+var _measure_panel: PanelContainer  # Invisible panel for size measurements
+var _measure_label: RichTextLabel  # Invisible label for size measurements
 
 # Configuration
 var tooltip_offset: Vector2 = Vector2(10, 10) # Offset from mouse cursor
@@ -85,7 +87,24 @@ func _create_tooltip_ui():
 	_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_tooltip_panel.add_child(_tooltip_label)
 
-	# Apply default styling
+	# Create measurement panel (positioned off-screen for accurate size calculations)
+	_measure_panel = PanelContainer.new()
+	_measure_panel.name = "MeasurePanel"
+	_measure_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_measure_panel.position = Vector2(-10000, -10000)  # Off-screen but visible for measurements
+	_tooltip_container.add_child(_measure_panel)
+
+	# Create label inside measure panel
+	_measure_label = RichTextLabel.new()
+	_measure_label.name = "MeasureLabel"
+	_measure_label.bbcode_enabled = true
+	_measure_label.fit_content = false
+	_measure_label.scroll_active = false
+	_measure_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_measure_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_measure_panel.add_child(_measure_label)
+
+	# Apply default styling to both panels
 	_apply_default_style()
 
 func _apply_default_style():
@@ -106,7 +125,9 @@ func _apply_default_style():
 	style_box.content_margin_top = 6
 	style_box.content_margin_bottom = 6
 
+	# Apply same style to both visible and measure panels for accurate sizing
 	_tooltip_panel.add_theme_stylebox_override("panel", style_box)
+	_measure_panel.add_theme_stylebox_override("panel", style_box)
 
 func register_tooltip(node: Control, text_provider: Callable, enabled_check: Callable = Callable(), delay: float = 0.5):
 	"""
@@ -238,40 +259,56 @@ func _update_tooltip_content():
 	# Call the provider function to get current tooltip text
 	var tooltip_text = provider.get_text.call()
 
-	# IMPORTANT: Reset size constraints completely to allow shrinking
-	_tooltip_label.custom_minimum_size = Vector2.ZERO
-	_tooltip_label.size = Vector2.ZERO
-	_tooltip_panel.custom_minimum_size = Vector2.ZERO
-	_tooltip_panel.size = Vector2.ZERO
+	# === STEP 1: Measure using invisible panel ===
+	# Reset measure panel completely
+	_measure_panel.custom_minimum_size = Vector2.ZERO
+	_measure_panel.size = Vector2.ZERO
+	_measure_label.custom_minimum_size = Vector2.ZERO
+	_measure_label.size = Vector2.ZERO
+	_measure_label.text = "[center]" + tooltip_text + "[/center]"
 
-	# Update label text with center alignment
-	_tooltip_label.text = "[center]" + tooltip_text + "[/center]"
-
-	# First, measure the natural (unwrapped) width by temporarily disabling wrapping
-	_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	# First, measure natural (unwrapped) width
+	_measure_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	await get_tree().process_frame
 
-	# Get the natural width the text wants to be (without wrapping)
-	var natural_width = _tooltip_label.get_content_width()
+	var natural_width = _measure_label.get_content_width()
 
-	# Re-enable wrapping
-	_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-
-	# Clamp the width between min and max, add some padding
+	# Clamp width between min and max, add padding for safety
 	var target_width = clamp(natural_width + 20, min_tooltip_width, max_tooltip_width)
 
-	# Set the width and calculate height based on wrapped content
-	_tooltip_label.custom_minimum_size.x = target_width
-	_tooltip_label.custom_minimum_size.y = 0
+	# Re-enable wrapping and set target width
+	_measure_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_measure_label.custom_minimum_size.x = target_width
+	_measure_label.custom_minimum_size.y = 0
+
+	# Wait for layout to calculate wrapped height
+	await get_tree().process_frame
 	await get_tree().process_frame
 
-	# Get the actual content height after wrapping
-	var content_height = _tooltip_label.get_content_height()
+	# Get the measured label height using get_content_height()
+	var measured_height = _measure_label.get_content_height()
 
-	# Set the height to match content
-	_tooltip_label.custom_minimum_size.y = content_height
+	# Fallback: use size.y if get_content_height returns 0
+	if measured_height <= 0:
+		measured_height = _measure_label.size.y
 
-	# Force panel to resize to fit the label
+	# Debug: ensure we have a valid height
+	if measured_height <= 0:
+		push_warning("TooltipManager: Failed to measure height, using fallback")
+		measured_height = 30  # Fallback minimum
+
+	# === STEP 2: Apply measurements to visible tooltip atomically ===
+	# Reset visible tooltip
+	_tooltip_panel.custom_minimum_size = Vector2.ZERO
+	_tooltip_panel.size = Vector2.ZERO
+	_tooltip_label.custom_minimum_size = Vector2.ZERO
+	_tooltip_label.size = Vector2.ZERO
+
+	# Apply new content and exact measured size
+	_tooltip_label.text = "[center]" + tooltip_text + "[/center]"
+	_tooltip_label.custom_minimum_size = Vector2(target_width, measured_height)
+
+	# Let it resize
 	await get_tree().process_frame
 
 	# Cache the current text to detect changes
