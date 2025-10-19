@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://driuhrx2pmbqm"]
 
 [ext_resource type="Script" uid="uid://cg6vgxba21nkl" path="res://scripts/main_menu.gd" id="1_l6cm7"]
-[ext_resource type="Texture2D" path="res://assets/mainmenu/menu-back.jpg" id="2_background"]
+[ext_resource type="Texture2D" uid="uid://cruj1pfwoxi6v" path="res://assets/mainmenu/menu-back.jpg" id="2_background"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -87,21 +87,18 @@ theme_override_constants/separation = 15
 [node name="Start" type="Button" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-tooltip_text = "TOOLTIP_START_GAME"
 mouse_filter = 1
 text = "BUTTON_START_GAME"
 
 [node name="Options" type="Button" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-tooltip_text = "TOOLTIP_OPTIONS"
 mouse_filter = 1
 text = "BUTTON_OPTIONS"
 
 [node name="Quit" type="Button" parent="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-tooltip_text = "TOOLTIP_QUIT"
 mouse_filter = 1
 text = "BUTTON_QUIT"
 
@@ -228,11 +225,6 @@ size_flags_vertical = 3
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1920x1080" to="." method="_on_resolution_pressed" binds= [1920, 1080]]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1280x720" to="." method="_on_resolution_pressed" binds= [1280, 720]]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1600x900" to="." method="_on_resolution_pressed" binds= [1600, 900]]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1366x768" to="." method="_on_resolution_pressed" binds= [1366, 768]]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Res1024x768" to="." method="_on_resolution_pressed" binds= [1024, 768]]
 [connection signal="toggled" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Fullscreen" to="." method="_on_fullscreen_toggled"]
 [connection signal="item_selected" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/LanguageMargin/LanguageDropdown" to="." method="_on_language_dropdown_selected"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/BackButtonMargin/BackButton" to="." method="_on_back_to_menu_pressed"]

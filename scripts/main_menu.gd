@@ -15,10 +15,22 @@ func _ready():
 	# Connect to language change signal to update dropdown translations
 	LocalizationManager.language_changed.connect(_on_language_changed)
 
-	# Register tooltip for start button
+	_register_tooltips()
+
+func _register_tooltips():
 	TooltipManager.register_tooltip(
 		$MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Start,
-		func(): return tr("TOOLTIP_START_GAME")
+		func(): return tr("BUTTON_START_GAME_TOOLTIP")
+	)
+
+	TooltipManager.register_tooltip(
+		$MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Options,
+		func(): return tr("BUTTON_OPTIONS_TOOLTIP")
+	)
+
+	TooltipManager.register_tooltip(
+		$MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Quit,
+		func(): return tr("BUTTON_QUIT_TOOLTIP")
 	)
 
 func _on_quit_pressed():

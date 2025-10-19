@@ -20,9 +20,9 @@ signal tooltip_hidden()
 
 # Tooltip provider data
 class TooltipProvider:
-	var get_text: Callable  # Function that returns tooltip text: func() -> String
-	var enabled_check: Callable  # Optional: func() -> bool to check if tooltip should show
-	var delay: float = 0.5  # Delay before showing tooltip
+	var get_text: Callable # Function that returns tooltip text: func() -> String
+	var enabled_check: Callable # Optional: func() -> bool to check if tooltip should show
+	var delay: float = 0.5 # Delay before showing tooltip
 
 	func _init(text_callable: Callable, enabled_callable: Callable = Callable(), tooltip_delay: float = 0.5):
 		get_text = text_callable
@@ -30,12 +30,13 @@ class TooltipProvider:
 		delay = tooltip_delay
 
 # Registry of all tooltip providers
-var _providers: Dictionary = {}  # Control node -> TooltipProvider
+var _providers: Dictionary = {} # Control node -> TooltipProvider
 
 # Current tooltip state
 var _current_hovered_node: Control = null
 var _hover_time: float = 0.0
 var _tooltip_visible: bool = false
+var _cached_tooltip_text: String = ""  # Cache to detect text changes
 
 # Tooltip UI elements
 var _tooltip_panel: PanelContainer
@@ -43,9 +44,10 @@ var _tooltip_label: RichTextLabel
 var _tooltip_container: Control
 
 # Configuration
-var tooltip_offset: Vector2 = Vector2(10, 10)  # Offset from mouse cursor
-var max_tooltip_width: float = 300.0
-var update_interval: float = 0.1  # How often to update tooltip text (seconds)
+var tooltip_offset: Vector2 = Vector2(10, 10) # Offset from mouse cursor
+var min_tooltip_width: float = 20.0 # Minimum width to prevent too narrow tooltips
+var max_tooltip_width: float = 400.0
+var update_interval: float = 0.1 # How often to update tooltip text (seconds)
 var _update_timer: float = 0.0
 
 func _ready():
@@ -56,7 +58,7 @@ func _create_tooltip_ui():
 	# Create a CanvasLayer for tooltip (always on top)
 	var canvas_layer = CanvasLayer.new()
 	canvas_layer.name = "TooltipCanvasLayer"
-	canvas_layer.layer = 100  # High layer to ensure it's always on top
+	canvas_layer.layer = 100 # High layer to ensure it's always on top
 	add_child(canvas_layer)
 
 	# Create container for tooltip
@@ -77,10 +79,9 @@ func _create_tooltip_ui():
 	_tooltip_label = RichTextLabel.new()
 	_tooltip_label.name = "TooltipLabel"
 	_tooltip_label.bbcode_enabled = true
-	_tooltip_label.fit_content = true
+	_tooltip_label.fit_content = false # We'll manually control the size
 	_tooltip_label.scroll_active = false
 	_tooltip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_tooltip_label.custom_minimum_size.x = max_tooltip_width
 	_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_tooltip_panel.add_child(_tooltip_label)
 
@@ -191,10 +192,14 @@ func _process(delta: float):
 			if not _tooltip_visible:
 				_show_tooltip()
 
-			# Update tooltip content periodically
+			# Update tooltip content periodically (only if text changed)
 			_update_timer += delta
 			if _update_timer >= update_interval:
-				_update_tooltip_content()
+				# Get new text from provider
+				var new_text = provider.get_text.call()
+				# Only update if text actually changed
+				if new_text != _cached_tooltip_text:
+					await _update_tooltip_content()
 				_update_timer = 0.0
 
 			# Update position every frame
@@ -206,7 +211,9 @@ func _show_tooltip():
 	if not _current_hovered_node or not _providers.has(_current_hovered_node):
 		return
 
-	_update_tooltip_content()
+	# Calculate content and size BEFORE making visible to avoid flicker
+	await _update_tooltip_content()
+
 	_tooltip_panel.visible = true
 	_tooltip_visible = true
 	_update_timer = 0.0
@@ -219,6 +226,7 @@ func _hide_tooltip():
 	_tooltip_visible = false
 	_hover_time = 0.0
 	_update_timer = 0.0
+	_cached_tooltip_text = ""  # Clear cache
 	tooltip_hidden.emit()
 
 func _update_tooltip_content():
@@ -230,8 +238,44 @@ func _update_tooltip_content():
 	# Call the provider function to get current tooltip text
 	var tooltip_text = provider.get_text.call()
 
-	# Update label
-	_tooltip_label.text = tooltip_text
+	# IMPORTANT: Reset size constraints completely to allow shrinking
+	_tooltip_label.custom_minimum_size = Vector2.ZERO
+	_tooltip_label.size = Vector2.ZERO
+	_tooltip_panel.custom_minimum_size = Vector2.ZERO
+	_tooltip_panel.size = Vector2.ZERO
+
+	# Update label text with center alignment
+	_tooltip_label.text = "[center]" + tooltip_text + "[/center]"
+
+	# First, measure the natural (unwrapped) width by temporarily disabling wrapping
+	_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	await get_tree().process_frame
+
+	# Get the natural width the text wants to be (without wrapping)
+	var natural_width = _tooltip_label.get_content_width()
+
+	# Re-enable wrapping
+	_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+	# Clamp the width between min and max, add some padding
+	var target_width = clamp(natural_width + 20, min_tooltip_width, max_tooltip_width)
+
+	# Set the width and calculate height based on wrapped content
+	_tooltip_label.custom_minimum_size.x = target_width
+	_tooltip_label.custom_minimum_size.y = 0
+	await get_tree().process_frame
+
+	# Get the actual content height after wrapping
+	var content_height = _tooltip_label.get_content_height()
+
+	# Set the height to match content
+	_tooltip_label.custom_minimum_size.y = content_height
+
+	# Force panel to resize to fit the label
+	await get_tree().process_frame
+
+	# Cache the current text to detect changes
+	_cached_tooltip_text = tooltip_text
 
 func _update_tooltip_position():
 	if not _tooltip_panel.visible:

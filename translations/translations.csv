@@ -3,9 +3,9 @@ GAME_TITLE,Learn Godot!,Lerne Godot!,Tanuld meg a Godót!,Godotを学ぼう！
 BUTTON_START_GAME,Start Game,Spiel starten,Játék indítása,ゲーム開始
 BUTTON_OPTIONS,Options,Optionen,Beállítások,オプション
 BUTTON_QUIT,Quit,Beenden,Kilépés,終了
-TOOLTIP_START_GAME,Start the game,Spiel starten,Játék indítása,ゲームを開始する
-TOOLTIP_OPTIONS,Change the options,Optionen ändern,Beállítások módosítása,オプションを変更する
-TOOLTIP_QUIT,Exit the game,Spiel beenden,Kilépés a játékból,ゲームを終了する
+BUTTON_START_GAME_TOOLTIP,Start the game,Spiel starten,Játék indítása,ゲームを開始する
+BUTTON_OPTIONS_TOOLTIP,Change the options,Optionen ändern,Beállítások módosítása,オプションを変更する
+BUTTON_QUIT_TOOLTIP,Exit the game,Spiel beenden,Kilépés a játékból,ゲームを終了する
 OPTIONS_TITLE,Options,Optionen,Beállítások,オプション
 LABEL_RESOLUTION,Resolution,Auflösung,Felbontás,解像度
 RESOLUTION_1920X1080,1920 x 1080 (Full HD),1920 x 1080 (Full HD),1920 x 1080 (Full HD),1920 x 1080 (フルHD)
