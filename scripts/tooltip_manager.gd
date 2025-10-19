@@ -109,22 +109,16 @@ func _create_tooltip_ui():
 	_apply_default_style()
 
 func _apply_default_style():
-	# Create a simple dark style for the tooltip
+	# Create a dark style for the tooltip using theme colors and constants
 	var style_box = StyleBoxFlat.new()
-	style_box.bg_color = Color(0.1, 0.1, 0.1, 0.95)
-	style_box.border_color = Color(0.3, 0.3, 0.3, 1.0)
-	style_box.border_width_left = 1
-	style_box.border_width_right = 1
-	style_box.border_width_top = 1
-	style_box.border_width_bottom = 1
-	style_box.corner_radius_top_left = 4
-	style_box.corner_radius_top_right = 4
-	style_box.corner_radius_bottom_left = 4
-	style_box.corner_radius_bottom_right = 4
-	style_box.content_margin_left = 8
-	style_box.content_margin_right = 8
-	style_box.content_margin_top = 6
-	style_box.content_margin_bottom = 6
+	style_box.bg_color = ThemeColors.darken(ThemeColors.BG_DARK, 0.05)  # Slightly darker than BG_DARK
+	style_box.border_color = ThemeColors.BORDER_SUBTLE
+	style_box.set_border_width_all(ThemeConstants.BORDER_WIDTH)
+	style_box.set_corner_radius_all(ThemeConstants.CORNER_RADIUS_SMALL)
+	style_box.content_margin_left = ThemeConstants.SPACING_SMALL
+	style_box.content_margin_right = ThemeConstants.SPACING_SMALL
+	style_box.content_margin_top = ThemeConstants.SPACING_SMALL - 2  # Slightly tighter vertical spacing
+	style_box.content_margin_bottom = ThemeConstants.SPACING_SMALL - 2
 
 	# Apply same style to both visible and measure panels for accurate sizing
 	_tooltip_panel.add_theme_stylebox_override("panel", style_box)

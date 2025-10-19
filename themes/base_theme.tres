@@ -1,3 +1,15 @@
-[gd_resource type="Theme" format=3 uid="uid://ca3tjnjgibxag"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://ca3tjnjgibxag"]
+
+[ext_resource type="SystemFont" uid="uid://b14o7s1me01qx" path="res://themes/fonts/ui.tres" id="1_f7v51"]
+[ext_resource type="SystemFont" uid="uid://boap1wfkdbdlb" path="res://themes/fonts/header.tres" id="2_p0ucp"]
+[ext_resource type="SystemFont" uid="uid://ku1rgxumtvkg" path="res://themes/fonts/body.tres" id="3_ikh11"]
 
 [resource]
+default_font = ExtResource("3_ikh11")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.5019608, 0.5019608, 0.5019608, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/fonts/font = ExtResource("1_f7v51")
+Label/fonts/font = ExtResource("2_p0ucp")
+RichTextLabel/fonts/normal_font = ExtResource("1_f7v51")

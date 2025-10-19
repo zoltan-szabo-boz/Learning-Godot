@@ -1,3 +1,4 @@
 [gd_resource type="SystemFont" format=3 uid="uid://b14o7s1me01qx"]
 
 [resource]
+font_weight = 500

@@ -23,6 +23,10 @@ LocalizationManager="*res://scripts/localization_manager.gd"
 TooltipManager="*res://scripts/tooltip_manager.gd"
 EventBus="*res://scripts/event_bus.gd"
 
+[gui]
+
+theme/custom="res://themes/base_theme.tres"
+
 [internationalization]
 
 locale/translations=PackedStringArray("res://translations/translations.en.translation", "res://translations/translations.de.translation", "res://translations/translations.hu.translation", "res://translations/translations.ja.translation")

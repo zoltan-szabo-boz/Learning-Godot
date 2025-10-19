@@ -1,3 +1,5 @@
 [gd_resource type="SystemFont" format=3 uid="uid://boap1wfkdbdlb"]
 
 [resource]
+font_names = PackedStringArray("Arial", "Comic Sans MS")
+font_weight = 700
