@@ -36,8 +36,8 @@ static func format_time(time_dict: Dictionary) -> String:
 ##   format_seconds(3661) -> "01:01:01"
 static func format_seconds(seconds: float, show_hours: bool = false) -> String:
 	var total_seconds = int(seconds)
-	var hours = total_seconds / 3600
-	var minutes = (total_seconds % 3600) / 60
+	var hours = int(total_seconds / 3600.0)
+	var minutes = int((total_seconds % 3600) / 60.0)
 	var secs = total_seconds % 60
 
 	if hours > 0 or show_hours:
