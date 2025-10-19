@@ -1,4 +1,4 @@
-# Godot Development Environment with Headless Testing
+# Boz Godot Framework - Development Environment with Headless Testing
 # Based on official Godot Docker images
 
 FROM barichello/godot-ci:4.5
@@ -20,7 +20,7 @@ ENV DISPLAY=:0
 CMD ["godot", "--headless", "--path", "/workspace", "-s", "addons/gut/gut_cmdln.gd", "-gexit"]
 
 # Usage examples:
-# Build: docker build -t godot-learning .
-# Run tests: docker run --rm godot-learning
-# Run validation: docker run --rm godot-learning godot --headless --path /workspace --script res://scripts/validate_project.gd
-# Interactive shell: docker run -it --rm godot-learning bash
+# Build: docker build -t boz-godot-framework .
+# Run tests: docker run --rm boz-godot-framework
+# Run validation: docker run --rm boz-godot-framework godot --headless --path /workspace --script res://scripts/validate_project.gd
+# Interactive shell: docker run -it --rm boz-godot-framework bash

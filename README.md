@@ -1,6 +1,6 @@
-# Learning Godot Project
+# Boz Godot Framework
 
-A Godot 4.5 learning project configured with GL Compatibility rendering. Features a simple UI with main menu and game scene navigation.
+A professional Godot 4.5 framework configured with GL Compatibility rendering. Provides a robust foundation for game development with comprehensive systems including localization, event management, dynamic tooltips, file handling, and more.
 
 ## Table of Contents
 
@@ -154,7 +154,7 @@ Run the validation script to check project integrity:
 validate.bat
 
 # Manual validation
-"d:\Godot\Godot_v4.5.1-stable_win64.exe" --headless --path "D:\Godot\learning-godot" --script res://scripts/validate_project.gd
+"d:\Godot\Godot_v4.5.1-stable_win64.exe" --headless --path "D:\Godot\boz-godot-framework" --script res://scripts/validate_project.gd
 ```
 
 The script checks:
@@ -178,10 +178,10 @@ This project includes GUT (Godot Unit Test) framework for automated testing.
 
 ```bash
 # Run all tests
-"d:\Godot\Godot_v4.5.1-stable_win64.exe" --path "D:\Godot\learning-godot" -s addons/gut/gut_cmdln.gd
+"d:\Godot\Godot_v4.5.1-stable_win64.exe" --path "D:\Godot\boz-godot-framework" -s addons/gut/gut_cmdln.gd
 
 # Run specific test
-"d:\Godot\Godot_v4.5.1-stable_win64.exe" --path "D:\Godot\learning-godot" -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_calculator.gd
+"d:\Godot\Godot_v4.5.1-stable_win64.exe" --path "D:\Godot\boz-godot-framework" -s addons/gut/gut_cmdln.gd -gtest=res://tests/test_calculator.gd
 ```
 
 #### Included Tests
@@ -275,19 +275,19 @@ For testing without full export:
 
 ```bash
 # Run headless
-"d:\Godot\Godot_v4.5.1-stable_win64.exe" --headless --path "D:\Godot\learning-godot"
+"d:\Godot\Godot_v4.5.1-stable_win64.exe" --headless --path "D:\Godot\boz-godot-framework"
 
 # Run specific scene
-"d:\Godot\Godot_v4.5.1-stable_win64.exe" --path "D:\Godot\learning-godot" res://scenes/game.tscn
+"d:\Godot\Godot_v4.5.1-stable_win64.exe" --path "D:\Godot\boz-godot-framework" res://scenes/game.tscn
 
 # Run and quit after 100 frames
-"d:\Godot\Godot_v4.5.1-stable_win64.exe" --headless --path "D:\Godot\learning-godot" --quit-after 100
+"d:\Godot\Godot_v4.5.1-stable_win64.exe" --headless --path "D:\Godot\boz-godot-framework" --quit-after 100
 ```
 
 ## Project Structure
 
 ```
-learning-godot/
+boz-godot-framework/
 ├── .godot/                 # Editor cache (gitignored)
 ├── .vscode/                # VS Code configuration
 │   ├── settings.json       # Godot paths, LSP config
@@ -362,16 +362,16 @@ For CI/CD and headless testing:
 
 ```bash
 # Build Docker image
-docker build -t godot-learning .
+docker build -t bozs-godot-framework .
 
 # Run tests in container
-docker-compose run godot-test
+docker-compose run --rm test
 
 # Run validation in container
-docker-compose run godot-validate
+docker-compose run --rm validate
 
 # Interactive shell
-docker-compose run godot-shell
+docker-compose run --rm shell
 ```
 
 **Note**: Docker is for headless testing/CI. For visual development, use local Godot Editor.

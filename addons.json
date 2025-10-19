@@ -1,6 +1,6 @@
 {
-  "name": "learning-godot",
-  "description": "A Godot 4.5 learning project",
+  "name": "boz-godot-framework",
+  "description": "A professional Godot 4.5 framework",
   "godot_version": "4.5.1",
   "addons": [
     {

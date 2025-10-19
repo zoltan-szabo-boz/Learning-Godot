@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Godot 4.5 learning project configured with GL Compatibility rendering. The project supports multiple languages (English and Hungarian) through a localization system.
+**Boz Godot Framework** is a professional Godot 4.5 framework configured with GL Compatibility rendering. The project provides a robust foundation for game development with comprehensive systems including localization, event management, tooltips, and file handling.
 
 **Development Approach:** This project follows Test-Driven Development (TDD) principles. All systems should have basic tests written upon implementation to ensure functionality and prevent regressions.
 

@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="LearningGodot"
+config/name="Boz Godot Framework"
 run/main_scene="uid://driuhrx2pmbqm"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"

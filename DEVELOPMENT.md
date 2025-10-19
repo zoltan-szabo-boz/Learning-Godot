@@ -59,7 +59,7 @@ We maintain `addons.json` as a package.json equivalent:
 
 ```json
 {
-  "name": "learning-godot",
+  "name": "boz-godot-framework",
   "godot_version": "4.5.1",
   "addons": [
     {
@@ -146,16 +146,16 @@ We provide a `Dockerfile` based on official Godot CI images:
 
 ```bash
 # Build image
-docker build -t godot-learning .
+docker build -t boz-godot-framework .
 
 # Run tests
-docker run --rm godot-learning
+docker run --rm boz-godot-framework
 
 # Run validation
-docker run --rm godot-learning godot --headless --path /workspace --script res://scripts/validate_project.gd
+docker run --rm boz-godot-framework godot --headless --path /workspace --script res://scripts/validate_project.gd
 
 # Interactive shell
-docker run -it --rm godot-learning bash
+docker run -it --rm boz-godot-framework bash
 ```
 
 #### Docker Compose
@@ -406,7 +406,7 @@ This indicates a version mismatch between Godot and the GUT addon:
 docker-compose build
 
 # Or rebuild manually
-docker build -t godot-learning .
+docker build -t boz-godot-framework .
 
 # Then run tests again
 docker-compose run godot-test
