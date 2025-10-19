@@ -157,9 +157,9 @@ func _update_tab_titles():
 	tab_container.set_tab_title(0, tr("TAB_GRAPHICS"))
 	tab_container.set_tab_title(1, tr("TAB_LANGUAGE"))
 
-func _on_language_changed(data: Dictionary):
+func _on_language_changed(_data: Dictionary):
 	# Repopulate dropdown to update translated language names
-	# data contains: {"locale": String}
+	# _data contains: {"locale": String} - required by EventBus but not used here
 	_populate_language_dropdown()
 
 	# Update tab titles to reflect new language
