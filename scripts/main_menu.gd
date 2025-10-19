@@ -5,11 +5,17 @@ extends Control
 @onready var tab_container = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer
 @onready var resolution_dropdown = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/ResolutionDropdown
 @onready var fullscreen_check = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/Fullscreen
+@onready var font_size_slider = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/FontSizeContainer/FontSizeSlider
+@onready var font_size_value = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/FontSizeContainer/FontSizeValue
 @onready var language_dropdown = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Language/VBoxContainer/LanguageDropdown
 
 func _ready():
 	# Initialize fullscreen checkbox state from config
 	fullscreen_check.button_pressed = ConfigManager.config.fullscreen
+
+	# Initialize font size slider from config
+	font_size_slider.value = ConfigManager.config.font_scale
+	_update_font_size_label(ConfigManager.config.font_scale)
 
 	# Populate resolution dropdown
 	_populate_resolution_dropdown()
@@ -23,11 +29,18 @@ func _ready():
 	# Subscribe to language change events via EventBus
 	EventBus.subscribe("language_changed", _on_language_changed)
 
+	# Subscribe to font scale change events
+	EventBus.subscribe("font_scale_changed", _on_font_scale_changed)
+
+	# Apply initial font scale (ConfigManager also does this, but we ensure it's current)
+	ConfigManager.apply_font_scale()
+
 	_register_tooltips()
 
 func _exit_tree():
 	# Unsubscribe from EventBus when leaving tree
 	EventBus.unsubscribe("language_changed", _on_language_changed)
+	EventBus.unsubscribe("font_scale_changed", _on_font_scale_changed)
 
 func _register_tooltips():
 	# Dynamic tooltip with current time for demonstration
@@ -173,3 +186,20 @@ func _on_language_dropdown_selected(index: int):
 	var lang = LocalizationManager.available_languages[index]
 	LocalizationManager.set_language(lang.code)
 	print("Language changed to: %s" % lang.code)
+
+func _on_font_size_slider_value_changed(value: float):
+	# Update the label to show current value
+	_update_font_size_label(value)
+
+	# Save to config and trigger EventBus notification
+	ConfigManager.set_font_scale(value)
+
+func _update_font_size_label(value: float):
+	# Format value to 1 decimal place
+	font_size_value.text = "%.1f" % value
+
+func _on_font_scale_changed(_data: Dictionary):
+	# Font scale is now applied automatically by ConfigManager
+	# This callback is kept for potential future UI updates
+	# _data contains: {"scale": float}
+	pass

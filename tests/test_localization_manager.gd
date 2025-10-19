@@ -221,7 +221,6 @@ func test_all_keys_exist_in_both_languages():
 		"BUTTON_START_GAME",
 		"BUTTON_OPTIONS",
 		"BUTTON_QUIT",
-		"OPTIONS_TITLE",
 		"LABEL_RESOLUTION",
 		"BUTTON_FULLSCREEN",
 		"LABEL_LANGUAGE"

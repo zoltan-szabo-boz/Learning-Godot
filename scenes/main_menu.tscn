@@ -113,6 +113,10 @@ current_tab = 0
 
 [node name="Graphics" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 metadata/_tab_index = 0
 metadata/_tab_name = "TAB_GRAPHICS"
 
@@ -136,9 +140,39 @@ layout_mode = 2
 layout_mode = 2
 text = "BUTTON_FULLSCREEN"
 
+[node name="Spacer2" type="Control" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="FontSizeLabel" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+text = "LABEL_FONT_SIZE"
+horizontal_alignment = 1
+
+[node name="FontSizeContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer"]
+layout_mode = 2
+
+[node name="FontSizeSlider" type="HSlider" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/FontSizeContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.7
+max_value = 1.4
+step = 0.1
+value = 1.0
+
+[node name="FontSizeValue" type="Label" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/FontSizeContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+text = "1.0"
+horizontal_alignment = 2
+
 [node name="Language" type="MarginContainer" parent="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 metadata/_tab_index = 1
 metadata/_tab_name = "TAB_LANGUAGE"
 
@@ -166,5 +200,6 @@ text = "BUTTON_BACK_TO_MENU"
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MainMenuPanel/VBoxContainer/ButtonMargin/ButtonContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="item_selected" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/ResolutionDropdown" to="." method="_on_resolution_dropdown_selected"]
 [connection signal="toggled" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="value_changed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/FontSizeContainer/FontSizeSlider" to="." method="_on_font_size_slider_value_changed"]
 [connection signal="item_selected" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Language/VBoxContainer/LanguageDropdown" to="." method="_on_language_dropdown_selected"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/BackButtonMargin/BackButton" to="." method="_on_back_to_menu_pressed"]

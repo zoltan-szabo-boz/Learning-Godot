@@ -98,15 +98,21 @@ func test_options_panel_has_tabcontainer():
 	assert_not_null(graphics_tab, "Graphics tab should exist")
 	assert_not_null(language_tab, "Language tab should exist")
 
-# Test: Graphics tab has resolution dropdown and fullscreen checkbox
+# Test: Graphics tab has resolution dropdown, fullscreen checkbox, and font size slider
 func test_graphics_tab_has_controls():
 	var resolution_dropdown = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/ResolutionDropdown")
 	var fullscreen = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/Fullscreen")
+	var font_size_slider = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/FontSizeContainer/FontSizeSlider")
 
 	assert_not_null(resolution_dropdown, "Resolution dropdown should exist")
 	assert_not_null(fullscreen, "Fullscreen checkbox should exist")
+	assert_not_null(font_size_slider, "Font size slider should exist")
 	if resolution_dropdown:
 		assert_eq(resolution_dropdown.item_count, 5, "Resolution dropdown should have 5 options")
+	if font_size_slider:
+		assert_eq(font_size_slider.min_value, 0.7, "Font size slider min should be 0.7")
+		assert_eq(font_size_slider.max_value, 1.4, "Font size slider max should be 1.4")
+		assert_eq(font_size_slider.value, 1.0, "Font size slider default should be 1.0")
 
 # Test: Back button returns to main menu
 func test_back_button_returns_to_menu():
@@ -188,3 +194,28 @@ func test_tab_titles_update_on_language_change():
 		# We can't easily test the exact translated text, but we can verify they're not empty
 		assert_gt(tab_container.get_tab_title(0).length(), 0, "Graphics tab title should not be empty")
 		assert_gt(tab_container.get_tab_title(1).length(), 0, "Language tab title should not be empty")
+
+# Test: Font size slider changes content scale
+func test_font_size_slider_changes_scale():
+	var font_size_slider = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/FontSizeContainer/FontSizeSlider")
+	var font_size_value = main_menu.get_node_or_null("MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/TabContainer/Graphics/VBoxContainer/FontSizeContainer/FontSizeValue")
+
+	if font_size_slider and font_size_value:
+		# Test setting to 1.2
+		font_size_slider.value = 1.2
+		font_size_slider.value_changed.emit(1.2)
+		await get_tree().process_frame
+		assert_eq(ConfigManager.config.font_scale, 1.2, "Font scale should be saved to config")
+		assert_eq(font_size_value.text, "1.2", "Font size value label should display 1.2")
+
+		# Test setting to 0.7 (minimum)
+		font_size_slider.value = 0.7
+		font_size_slider.value_changed.emit(0.7)
+		await get_tree().process_frame
+		assert_eq(ConfigManager.config.font_scale, 0.7, "Font scale should be 0.7")
+
+		# Test setting to 1.4 (maximum)
+		font_size_slider.value = 1.4
+		font_size_slider.value_changed.emit(1.4)
+		await get_tree().process_frame
+		assert_eq(ConfigManager.config.font_scale, 1.4, "Font scale should be 1.4")
