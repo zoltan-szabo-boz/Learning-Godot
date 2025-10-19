@@ -98,21 +98,26 @@ This project uses GUT (Godot Unit Test) for automated testing. All core systems 
 The project includes Docker support for headless testing and CI/CD:
 
 ```bash
-# Run all tests
-docker-compose run test
+# Run all tests (container auto-removes after completion)
+docker-compose run --rm test
 
-# Run project validation
-docker-compose run validate
+# Run project validation (container auto-removes after completion)
+docker-compose run --rm validate
 
-# Open interactive shell for debugging
-docker-compose run shell
+# Open interactive shell for debugging (container auto-removes on exit)
+docker-compose run --rm shell
 ```
+
+**Important:** Always use the `--rm` flag to automatically remove containers after they exit. This prevents container buildup.
 
 **Docker Setup:**
 - Uses `barichello/godot-ci:4.5` base image
 - Tests run via GUT command-line interface (`addons/gut/gut_cmdln.gd`)
 - Project mounted at `/workspace` in container
 - Headless mode for CI/CD compatibility
+- GUT runs with `-gexit` flag to exit cleanly after tests complete
+- Containers configured with `restart: "no"` to prevent lingering
+- Combined with `--rm` flag, containers auto-remove immediately after tests complete
 
 ### Writing Tests
 

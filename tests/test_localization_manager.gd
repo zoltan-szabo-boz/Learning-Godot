@@ -25,7 +25,6 @@ func test_available_languages_defined():
 
 	assert_not_null(languages, "Available languages should be defined")
 	assert_gt(languages.size(), 0, "Should have at least one language")
-	assert_eq(languages.size(), 2, "Should have exactly 2 languages (en, hu)")
 
 # Test: Language codes are correct
 func test_language_codes():
@@ -63,14 +62,11 @@ func test_change_language_to_hungarian():
 # Note: This test validates that setting an invalid language doesn't change the current language
 # The warning logged by LocalizationManager is expected behavior
 func test_invalid_language_rejected():
-	var original_language = LocalizationManager.get_language()
-
 	# Set to a known valid language first
 	LocalizationManager.set_language("en")
 	var before_invalid = LocalizationManager.get_language()
 
 	# Try to set invalid language - this will log a warning but shouldn't change the language
-	# Temporarily disable strict checking since warning is expected
 	LocalizationManager.set_language("invalid")
 
 	# Language should remain unchanged

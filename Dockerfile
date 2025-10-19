@@ -17,7 +17,7 @@ ENV GODOT_VERSION=4.5
 ENV DISPLAY=:0
 
 # Default command: run tests
-CMD ["godot", "--headless", "--path", "/workspace", "-s", "addons/gut/gut_cmdln.gd"]
+CMD ["godot", "--headless", "--path", "/workspace", "-s", "addons/gut/gut_cmdln.gd", "-gexit"]
 
 # Usage examples:
 # Build: docker build -t godot-learning .

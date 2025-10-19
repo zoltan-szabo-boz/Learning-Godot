@@ -3,31 +3,37 @@ services:
   test:
     build: .
     image: godot-learning:latest
-    container_name: godot-learning-test
     volumes:
       - .:/workspace
-    command: godot --headless --path /workspace -s addons/gut/gut_cmdln.gd
+    command: godot --headless --path /workspace -s addons/gut/gut_cmdln.gd -gexit
+    restart: "no"
+    # Note: Use 'docker-compose run --rm test' to auto-remove container after execution
 
   # Godot project validation
   validate:
     build: .
     image: godot-learning:latest
-    container_name: godot-learning-validate
     volumes:
       - .:/workspace
     command: godot --headless --path /workspace --script res://scripts/validate_project.gd
+    restart: "no"
+    # Note: Use 'docker-compose run --rm validate' to auto-remove container after execution
 
   # Interactive development shell
   shell:
     build: .
     image: godot-learning:latest
-    container_name: godot-learning-shell
     volumes:
       - .:/workspace
     stdin_open: true
     tty: true
     command: bash
+    restart: "no"
+
 # Usage:
-# docker-compose run test          # Run all tests
-# docker-compose run validate      # Run validation
-# docker-compose run shell         # Interactive shell
+# docker-compose run --rm test          # Run all tests (container auto-removed)
+# docker-compose run --rm validate      # Run validation (container auto-removed)
+# docker-compose run --rm shell         # Interactive shell (container auto-removed on exit)
+#
+# The --rm flag automatically removes containers after they exit.
+# Without --rm, use 'docker-compose down' or 'docker container prune' to clean up.
