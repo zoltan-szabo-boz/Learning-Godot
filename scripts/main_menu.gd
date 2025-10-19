@@ -5,8 +5,8 @@ extends Control
 @onready var fullscreen_check = $MarginContainer/HBoxContainer/OptionsPanel/VBoxContainer/ResolutionMargin/ResolutionContainer/Fullscreen
 
 func _ready():
-	# Initialize fullscreen checkbox state
-	fullscreen_check.button_pressed = (DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN)
+	# Initialize fullscreen checkbox state from config
+	fullscreen_check.button_pressed = ConfigManager.config.fullscreen
 
 func _on_quit_pressed():
 	# Quits the application immediately
@@ -27,28 +27,18 @@ func _on_back_to_menu_pressed():
 	main_menu_panel.show()
 
 func _on_resolution_pressed(width: int, height: int):
-	# Change the window resolution
+	# Change the window resolution and save to config
 	print("Changing resolution to %dx%d" % [width, height])
 
 	# If in fullscreen mode, switch to windowed first
-	if DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	if ConfigManager.config.fullscreen:
+		ConfigManager.set_fullscreen(false)
 		fullscreen_check.button_pressed = false
 
-	# Set the window size
-	DisplayServer.window_set_size(Vector2i(width, height))
-
-	# Center the window on screen
-	var screen_size = DisplayServer.screen_get_size()
-	var window_size = DisplayServer.window_get_size()
-	var centered_pos = (screen_size - window_size) / 2
-	DisplayServer.window_set_position(centered_pos)
+	# Set the window size through ConfigManager
+	ConfigManager.set_resolution(Vector2i(width, height))
 
 func _on_fullscreen_toggled(toggled_on: bool):
-	# Toggle fullscreen mode
-	if toggled_on:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-		print("Fullscreen enabled")
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		print("Fullscreen disabled")
+	# Toggle fullscreen mode and save to config
+	ConfigManager.set_fullscreen(toggled_on)
+	print("Fullscreen %s" % ("enabled" if toggled_on else "disabled"))
